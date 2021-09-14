@@ -1,0 +1,23 @@
+Grading factors (C)
+
+• Functional requirements
+    – Minimally, the Web application should allow information about books to be displayed in a Web
+    browser
+    – Users should be able to navigate books, noting that there is a limit on the number of books that can
+    be displayed on a single Web page
+
+
+• Non-functional requirements
+    – Conformance to the project structure used for sample Flask applications (as also discussed in labs)
+        • Inclusion of requirements.txt file, readme file etc.
+    – User interface
+        • Use of CSS to style HTML pages
+        • Appropriate use of Jinja templating to define HTML layout, pages and partials
+    – Web interface
+        • Appropriate definition of entry points (URLs)
+        • Appropriate use of the HTTP protocol (e.g. query parameters, response codes etc.)
+    – Testing (python -m pytest -v tests)
+        • Thoroughness of unit and integration tests (this requirement also applies for grades B to A+ accordingly)
+        • Presence of unit tests for all key components (domain model, repository, any service layer components)
+    – Application of the Repository pattern (Memory repository)
+        • Design of a suitable interface and implementation for querying data about books
