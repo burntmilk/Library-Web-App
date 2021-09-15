@@ -1,7 +1,7 @@
 """Initialize Flask app."""
 
 from flask import Flask, render_template
-from pathlib import Path
+from pathlib import Path    # Gets file names for book + author data
 
 from library.adapters.jsondatareader import BooksJSONReader
 
@@ -16,14 +16,12 @@ def create_app():
     author_file = str(Path(data_path) / "book_authors_excerpt.json")
 
     reader = BooksJSONReader(books_file, author_file)
-    books = reader.read_books_file()
+    books_db = reader.read_books_file()
 
     @app.route('/')
     def home():
-        # some_book = create_some_book()
-        some_book = books[0]
 
         # Use Jinja to customize a predefined html page rendering the layout for showing a single book.
-        return render_template('simple_book.html', book=some_book)
+        return render_template('simple_book.html', books=books_db)
 
     return app
