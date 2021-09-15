@@ -5,6 +5,7 @@ from flask import Flask, render_template
 # TODO: Access to the books should be implemented via the repository pattern and using blueprints, so this can not stay here!
 from library.domain.model import Book
 
+
 # TODO: Access to the books should be implemented via the repository pattern and using blueprints, so this can not stay here!
 def create_some_book():
     some_book = Book(1, "Harry Potter and the Chamber of Secrets")
