@@ -16,7 +16,8 @@ def create_app():
     author_file = str(Path(data_path) / "book_authors_excerpt.json")
 
     reader = BooksJSONReader(books_file, author_file)
-    books_db = reader.read_books_file()
+    reader.read_json_files()
+    books_db = reader.dataset_of_books
 
     @app.route('/')
     def home():
