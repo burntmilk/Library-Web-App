@@ -19,10 +19,17 @@ def create_app():
     reader.read_json_files()
     books_db = reader.dataset_of_books
 
-    @app.route('/')
-    def home():
+    with app.app_context():
+        # Register blueprints.
+        from .home import home
+        app.register_blueprint(home.home_blueprint)
 
-        # Use Jinja to customize a predefined html page rendering the layout for showing a single book.
-        return render_template('simple_book.html', books=books_db)
+        from .browse import browse
+        app.register_blueprint(browse.browse_blueprint)
+
+        # TODO: Authentication implementation
+        # from .authentication import authentication
+        # app.register_blueprint(authentication.authentication_blueprint)
+
 
     return app
