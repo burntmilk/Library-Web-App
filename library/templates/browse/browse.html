@@ -1,0 +1,18 @@
+{% extends 'layout.html' %} {% block content %}
+<div class="browse_container">
+  <h1>Browse Books</h1>
+  <div>
+    <form class="book_search_form">
+      <input class="book_search_bar" type="search" placeholder="Search" />
+      <select name="filter" class="filter_select">
+        <option value="title">Title</option>
+        <option value="author">Author</option>
+        <option value="release_year">Year</option>
+        <option value="publisher">Publisher</option>
+      </select>
+      <button class="book_search_btn" type="submit">Search</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

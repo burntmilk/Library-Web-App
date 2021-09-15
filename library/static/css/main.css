@@ -24,7 +24,7 @@ nav {
   align-items: center;
   padding: 30px 10%;
 
-  height: 70px;
+  height: 50px;
 }
 
 .nav_links {
@@ -38,8 +38,27 @@ nav {
 
 button {
   padding: 9px 25px;
-  background-color: paleturquoise;
+  background-color: rgb(41, 85, 85);
   border: none;
   border-radius: 50px;
   cursor: pointer;
+}
+
+.browse_container h1 {
+  padding: 50px 50px 30px 50px;
+}
+
+.book_search_bar {
+  padding: 9px 25px;
+  border-radius: 50px;
+  width: 83vw;
+}
+
+.book_search_form {
+  padding: 0px 0px 20px 50px;
+}
+
+.filter_select {
+  padding: 9px 5px;
+  border-radius: 50px;
 }
