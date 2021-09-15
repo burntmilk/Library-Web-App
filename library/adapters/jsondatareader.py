@@ -64,3 +64,5 @@ class BooksJSONReader:
                 book_instance.add_author(Author(numerical_id, author_name))
 
             self.__dataset_of_books.append(book_instance)
+
+
