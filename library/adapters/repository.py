@@ -27,10 +27,10 @@ class AbstractRepository(abc.ABC):
     def get_five_books(self, page_num: int) -> List[Book]:
         raise NotImplementedError
 
-    @abc.abstractmethod
-    def add_user(self, user: User):
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def get_user(self, user_name: str) -> User:
-        raise NotImplementedError
+    # @abc.abstractmethod
+    # def add_user(self, user: User):
+    #     raise NotImplementedError
+    #
+    # @abc.abstractmethod
+    # def get_user(self, user_name: str) -> User:
+    #     raise NotImplementedError

@@ -26,6 +26,14 @@ class MemoryRepository(AbstractRepository):
         else:
             return self.__books[(page_num-1) * 5: len(self.__books)]
 
+    def get_book(self, book_id: int) -> Book:
+        b = None
+        for book in self.__books:
+            if book.book_id == book_id:
+                b = book
+        return b
+
+
 
 def load_books(data_path: Path, repo: MemoryRepository):    # makes list of book objects
     books_filename = str(Path(data_path) / "comic_books_excerpt.json")
