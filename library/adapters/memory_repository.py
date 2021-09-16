@@ -1,4 +1,3 @@
-import json
 from pathlib import Path
 from typing import List     # for better documentation of function return types
 
