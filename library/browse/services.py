@@ -8,6 +8,9 @@ from library.domain.model import Publisher, Author, Book, Review, User, BooksInv
 
 def get_books(repo: AbstractRepository):
     books = repo.get_books()
-    # if not books:   # list empty
-    #     raise EmptyBooksListException
+    return books
+
+
+def get_five_books(page_num: int, repo: AbstractRepository):
+    books = repo.get_five_books(page_num)
     return books

@@ -19,6 +19,8 @@
 {% for book in books %}
     <h1>{{ book.title }}</h1>
     <p>Release year: <b>{{ book.release_year }}</b></p>
+    <p>Authors: {% for author in book.authors %} {{ author.full_name }} {% endfor %}</p>
+    <p>Publisher: {{ book.publisher }}</p>
     <p>Description: {{ book.description }}</p>
 {% endfor %}
 

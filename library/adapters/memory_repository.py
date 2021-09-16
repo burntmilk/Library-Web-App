@@ -21,6 +21,12 @@ class MemoryRepository(AbstractRepository):
     def get_books(self) -> List[Book]:
         return self.__books
 
+    def get_five_books(self, page_num: int) -> List[Book]:
+        if page_num * 5 < len(self.__books):    # page numbers shouldn't go beyond list size
+            return self.__books[(page_num-1) * 5: page_num * 5]
+        else:
+            return self.__books[(page_num-1) * 5: len(self.__books)]
+
 
 def load_books(data_path: Path, repo: MemoryRepository):    # makes list of book objects
     books_filename = str(Path(data_path) / "comic_books_excerpt.json")

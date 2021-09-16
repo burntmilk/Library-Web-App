@@ -23,3 +23,6 @@ class AbstractRepository(abc.ABC):
     def get_books(self) -> List[Book]:
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def get_five_books(self, page_num: int) -> List[Book]:
+        raise NotImplementedError
