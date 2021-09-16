@@ -18,6 +18,8 @@ class MemoryRepository(AbstractRepository):
     def add_book(self, book: Book):
         self.__books.append(book)
 
+    def get_books(self) -> List[Book]:
+        return self.__books
 
 
 def load_books(data_path: Path, repo: MemoryRepository):    # makes list of book objects

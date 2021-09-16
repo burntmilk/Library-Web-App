@@ -1,5 +1,11 @@
 import abc
+from typing import List
+from datetime import date
+
 from library.domain.model import Publisher, Author, Book, Review, User, BooksInventory
+
+
+repo_instance = None
 
 
 class RepositoryException(Exception):   # Error messages for abstract repo
@@ -8,4 +14,12 @@ class RepositoryException(Exception):   # Error messages for abstract repo
 
 
 class AbstractRepository(abc.ABC):
-    pass
+
+    @abc.abstractmethod
+    def add_book(self, book: Book):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_books(self) -> List[Book]:
+        raise NotImplementedError
+
