@@ -220,6 +220,12 @@ class Book:
     def __hash__(self):
         return hash(self.book_id)
 
+    def display_authors(self) -> str:   # added
+        author_list = []
+        for author in self.authors:
+            author_list.append(author.full_name)
+        return ", ".join(author_list)
+
 
 class Review:
 
@@ -368,3 +374,9 @@ class BooksInventory:
             if self.__books[book_id].title == book_title:
                 return self.__books[book_id]
         return None
+
+    def get_books(self):    # added -Luke
+        books = []
+        for book_id in self.__books:
+            books.append(self.__books[book_id])
+        return books

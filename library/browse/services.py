@@ -17,5 +17,9 @@ def get_five_books(page_num: int, repo: AbstractRepository):
 
 
 def get_book(book_id: int, repo: AbstractRepository):
-    book = repo.get_book(book_id)
+    book = repo.get_book(int(book_id))
     return book
+
+
+def display_book_authors(book: Book, repo: AbstractRepository):
+    return repo.display_book_authors(book)

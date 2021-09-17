@@ -19,10 +19,11 @@ def browse():
 
 
 @browse_blueprint.route('/browse/<book_id>', methods=['GET'])
-def show_book(book_id):
+def show_book(book_id: int):
     book = services.get_book(book_id, repo.repo_instance)
 
     return render_template(
         'browse/book.html',
         book=book,
+        authors=services.display_book_authors(book, repo.repo_instance)
     )
