@@ -92,3 +92,23 @@ button {
   color: #24252a;
   padding: 0px 5px 0px 5px;
 }
+
+.book_container {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+
+.book_card {
+  width: 70vh;
+
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.book_card h1 {
+  padding: 20px 0px 20px 0px;
+}
+
+.book_card p {
+  padding-bottom: 5px;
+}

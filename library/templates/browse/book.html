@@ -1,23 +1,27 @@
 {% extends 'layout.html' %} {% block content %}
 
-<h1>{{ book.title }}</h1>
+<div class="book_container">
+  <div class="book_card">
+    <h1>{{ book.title }}</h1>
+    <p><b>Author(s):</b> {{ authors }}</p>
 
-Description:
-<p>{{ book.description }}</p>
+    <b>Description:</b>
+    <p>{{ book.description }}</p>
 
-<p>Publisher: {{ book.publisher.name }}</p>
-<p>Author(s): {{ authors }}</p>
+    <p><b>Publisher:</b> {{ book.publisher.name }}</p>
 
-<p>Release year: {{ book.release_year }}</p>
-<p>Number of pages: {{ book.num_pages }}</p>
+    <p><b>Release year:</b> {{ book.release_year }}</p>
+    <p><b>Number of pages:</b> {{ book.num_pages }}</p>
 
-{% if book.ebook %}
-E-book available
-{% else %}
-E-book unavailable
-{% endif %}
+    {% if book.ebook %}
+    <p><b>E-book:</b> available</p>
+    {% else %}
+    <p><b>E-book:</b> unavailable</p>
+    {% endif %}
 
-<p>Number in stock: {{ stock }}</p>
-<p>Price: {{ price }}</p>
+    <p><b>Number in stock:</b> {{ stock }}</p>
+    <p><b>Price:</b> {{ price }}</p>
+  </div>
+</div>
 
 {% endblock %}
