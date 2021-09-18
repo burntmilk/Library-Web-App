@@ -23,15 +23,8 @@ class MemoryRepository(AbstractRepository):
     def get_books(self) -> List[Book]:
         return self.__inventory.get_books()
 
-    # def get_five_books(self, page_num: int) -> List[Book]:
-    #     if page_num * 5 < len(self.__books):    # page numbers shouldn't go beyond list size
-    #         return self.__books[(page_num-1) * 5: page_num * 5]
-    #     else:
-    #         return self.__books[(page_num-1) * 5: len(self.__books)]
-
     def get_book(self, book_id: int) -> Book:
         return self.__inventory.find_book(book_id)
-
 
 
 def load_books(data_path: Path, repo: MemoryRepository):    # makes list of book objects
