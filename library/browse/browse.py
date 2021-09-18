@@ -25,5 +25,6 @@ def show_book(book_id: int):
     return render_template(
         'browse/book.html',
         book=book,
-        authors=services.display_book_authors(book, repo.repo_instance)
+        authors=services.display_book_authors(book)
+
     )

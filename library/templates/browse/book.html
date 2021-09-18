@@ -1,18 +1,21 @@
 {% extends 'layout.html' %} {% block content %}
 
 <h1>{{ book.title }}</h1>
+
 Description:
 <p>{{ book.description }}</p>
-Publisher:
-<p>{{ book.publisher.name }}</p>
-Author(s):
-<p>{{ authors }}</p>
+
+<p>Publisher: {{ book.publisher.name }}</p>
+<p>Author(s): {{ authors }}</p>
 
 <p>Release year: {{ book.release_year }}</p>
 <p>Number of pages: {{ book.num_pages }}</p>
-{% if book.ebook %}
 
+{% if book.ebook %}
+E-book available
+{% else %}
+E-book unavailable
 {% endif %}
-<p></p>
+
 
 {% endblock %}

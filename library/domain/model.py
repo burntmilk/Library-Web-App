@@ -220,12 +220,6 @@ class Book:
     def __hash__(self):
         return hash(self.book_id)
 
-    def display_authors(self) -> str:   # added
-        author_list = []
-        for author in self.authors:
-            author_list.append(author.full_name)
-        return ", ".join(author_list)
-
 
 class Review:
 

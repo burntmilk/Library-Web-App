@@ -21,5 +21,8 @@ def get_book(book_id: int, repo: AbstractRepository):
     return book
 
 
-def display_book_authors(book: Book, repo: AbstractRepository):
-    return repo.display_book_authors(book)
+def display_book_authors(book: Book):   # String of authors separated by commas
+    author_list = []
+    for author in book.authors:
+        author_list.append(author.full_name)
+    return ", ".join(author_list)
