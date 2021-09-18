@@ -34,7 +34,7 @@ nav {
 
 .nav_links li {
   display: inline-block;
-  padding: 0px 20px;
+  padding: 0px;
 }
 
 button {
@@ -97,15 +97,19 @@ button {
   display: flex;
   justify-content: center;
   height: 100%;
+  flex-direction: column;
+  align-items: center;
 }
 
 .individual_book_card {
   padding: 10px 50px 10px 50px;
+  margin-bottom: 30px;
   width: 70vh;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
-.individual_book_card h1 {
+.individual_book_card h1,
+h2 {
   padding: 20px 0px 20px 0px;
 }
 
