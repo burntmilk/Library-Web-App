@@ -99,16 +99,16 @@ button {
   height: 100%;
 }
 
-.book_card {
+.individual_book_card {
+  padding: 10px 50px 10px 50px;
   width: 70vh;
-
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
-.book_card h1 {
+.individual_book_card h1 {
   padding: 20px 0px 20px 0px;
 }
 
-.book_card p {
+.individual_book_card p {
   padding-bottom: 5px;
 }
