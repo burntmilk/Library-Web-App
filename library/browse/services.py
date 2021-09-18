@@ -17,6 +17,14 @@ def get_book(book_id: int, repo: AbstractRepository):
     return book
 
 
+def get_book_stock(book_id: int, repo: AbstractRepository):
+    return repo.get_book_stock(book_id)
+
+
+def get_book_price(book_id: int, repo: AbstractRepository):
+    return repo.get_book_price(book_id)
+
+
 def display_book_authors(book: Book):   # String of authors separated by commas
     author_list = []
     for author in book.authors:

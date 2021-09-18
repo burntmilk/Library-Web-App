@@ -32,12 +32,18 @@ def browse_books(page_num):
 
 
 @browse_blueprint.route('/book/<book_id>', methods=['GET'])
-def show_book(book_id: int):
+def show_book(book_id):
+    book_id = int(book_id)
+
     book = services.get_book(book_id, repo.repo_instance)
+    authors = services.display_book_authors(book)
+    stock = services.get_book_stock(book_id, repo.repo_instance)
+    price = services.get_book_price(book_id, repo.repo_instance)
 
     return render_template(
         'browse/book.html',
         book=book,
-        authors=services.display_book_authors(book)
-
+        authors=services.display_book_authors(book),
+        stock=stock,
+        price=price,
     )
