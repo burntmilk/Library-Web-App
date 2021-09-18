@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from math import ceil
 
 import library.adapters.repository as repo
 import library.browse.services as services
@@ -27,7 +28,7 @@ def browse_books(page_num):
         'browse/browse.html',
         books=books,
         displayed_books=displayed_books,
-        number_of_pages=len(books) // len(displayed_books),
+        number_of_pages=ceil(len(books) / 5),
     )
 
 
