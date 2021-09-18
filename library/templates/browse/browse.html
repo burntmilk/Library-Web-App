@@ -14,16 +14,24 @@
     </form>
   </div>
   <div class="content-container">
-    {% for book in books %}
+    {% for book in displayed_books %}
     <div class="book_card">
-      <h3>{{ book.title }}</h3>
+      <a href="{{ url_for('browse_bp.show_book', book_id=book.book_id) }}"
+        ><h3>{{ book.title }}</h3></a
+      >
+      <p>Release year: <b>{{ book.release_year }}</b></p>
+
       {% set author_list = [] %} {% for author in book.authors %} {{
       author.full_name if author_list.append(author.full_name) }} {% endfor %}
       <p>Author(s): {{author_list|join(", ")}}</p>
-      <p>Release year: <b>{{ book.release_year }}</b></p>
-      <p>Description: {{ book.description }}</p>
+      <p>Publisher(s): {{ book.publisher.name }}</p>
     </div>
+    {% endfor %}
+  </div>
 
+  <div class="page_num">
+    {% for i in range(number_of_pages) %}
+    <a href="{{ url_for('browse_bp.browse_books', page_num=i+1)}}">{{ i+1 }}</a>
     {% endfor %}
   </div>
 </div>
