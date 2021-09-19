@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, redirect, url_for, session
 from math import ceil
 
 import library.adapters.repository as repo
@@ -32,6 +32,21 @@ def browse_books(page_num):
     )
 
 
+@browse_blueprint.route('/browse', methods=['GET'])
+def browse():
+    books_per_page = 5
+
+    page_num = request.args.get('page')  # cursor
+    # filter = request.args.get('filter')
+
+    if page_num is None:
+        page_num = 1
+    else:
+        page_num = int(page_num)
+
+    # books = services.
+
+
 @browse_blueprint.route('/book/<book_id>', methods=['GET'])
 def show_book(book_id):
     book_id = int(book_id)
@@ -44,7 +59,7 @@ def show_book(book_id):
     return render_template(
         'browse/book.html',
         book=book,
-        authors=services.display_book_authors(book),
+        authors=authors,
         stock=stock,
         price=price,
     )
