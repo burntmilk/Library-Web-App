@@ -31,7 +31,6 @@ class MemoryRepository(AbstractRepository):
         return self.__inventory.find_price(book_id)
 
 
-
 def load_books(data_path: Path, repo: MemoryRepository):    # makes list of book objects
     books_filename = str(Path(data_path) / "comic_books_excerpt.json")
     author_filename = str(Path(data_path) / "book_authors_excerpt.json")

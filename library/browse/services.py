@@ -7,12 +7,12 @@ from library.domain.model import Publisher, Author, Book, Review, User, BooksInv
 #     pass
 
 
-def get_book(book_id: int, repo: AbstractRepository):
+def get_book(book_id: int, repo: AbstractRepository) -> dict:
     book = repo.get_book(int(book_id))
     return book_to_dict(book)
 
 
-def get_all_books(repo: AbstractRepository):
+def get_all_books(repo: AbstractRepository) -> List[Book]:
     books = repo.get_books()
     books_dto = []
     if len(books) > 0:
@@ -20,11 +20,11 @@ def get_all_books(repo: AbstractRepository):
     return books_dto
 
 
-def get_book_stock(book_id: int, repo: AbstractRepository):
+def get_book_stock(book_id: int, repo: AbstractRepository) -> int:
     return repo.get_book_stock(book_id)
 
 
-def get_book_price(book_id: int, repo: AbstractRepository):
+def get_book_price(book_id: int, repo: AbstractRepository) -> int:
     return repo.get_book_price(book_id)
 
 
