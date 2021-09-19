@@ -44,6 +44,14 @@ button {
   border-radius: 50px;
   cursor: pointer;
 }
+.button {
+  padding: 9px 25px;
+  background-color: rgb(41, 85, 85);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  color: #edf0f1;
+}
 
 .browse_container h1 {
   padding: 50px 50px 30px 50px;
@@ -115,4 +123,60 @@ h2 {
 
 .individual_book_card p {
   padding-bottom: 5px;
+}
+
+.register_container {
+  background-color: #24252a;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.register_card {
+  background-color: #edf0f1;
+  padding: 20px 50px 20px 50px;
+  margin-bottom: 30px;
+  width: 70vh;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 40vw;
+}
+
+.register_card a {
+  color: rgb(41, 85, 85);
+  font-weight: 500;
+  font-size: 20px;
+  text-decoration: underline;
+}
+
+.form {
+  padding: 30px 0px 0px 0px;
+}
+.form-field {
+  padding: 15px 0px 0px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.register-btn-wrapper {
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
+}
+
+.form-input {
+  padding: 0px 10px;
+  margin-left: 10px;
+  height: 30px;
+  border-radius: 50px;
+}
+
+.form-label {
+  font-size: 20px;
 }
