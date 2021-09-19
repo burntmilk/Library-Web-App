@@ -39,12 +39,13 @@ def get_five_books(books: List[Book], page_num: int):
         return books[(page_num-1) * 5: len(books)]
 
 
-def get_all_books_by_id(repo: AbstractRepository):
-    pass
+def get_all_books(repo: AbstractRepository):
+    books = repo.get_books()
+    books_dto = []
+    if len(books) > 0:
+        books_dto = books_to_dict(books)
+    return books_dto
 
-def get_books_by_id(id_list, repo: AbstractRepository):
-    # books = repo.
-    pass
 
 
 # ============================================
@@ -53,7 +54,7 @@ def get_books_by_id(id_list, repo: AbstractRepository):
 
 def book_to_dict(book: Book):
     book_dict = {
-        'id': book.book_id,
+        'book_id': book.book_id,
         'title': book.title,
         'description': book.description,
         'publisher': book.publisher.name,
