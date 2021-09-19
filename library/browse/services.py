@@ -7,36 +7,9 @@ from library.domain.model import Publisher, Author, Book, Review, User, BooksInv
 #     pass
 
 
-def get_books(repo: AbstractRepository):
-    books = repo.get_books()
-    return books
-
-
 def get_book(book_id: int, repo: AbstractRepository):
     book = repo.get_book(int(book_id))
-    return book
-
-
-def get_book_stock(book_id: int, repo: AbstractRepository):
-    return repo.get_book_stock(book_id)
-
-
-def get_book_price(book_id: int, repo: AbstractRepository):
-    return repo.get_book_price(book_id)
-
-
-def display_book_authors(book: Book):   # String of authors separated by commas
-    author_list = []
-    for author in book.authors:
-        author_list.append(author.full_name)
-    return ", ".join(author_list)
-
-
-def get_five_books(books: List[Book], page_num: int):
-    if page_num * 5 < len(books):
-        return books[(page_num-1) * 5: page_num * 5]
-    else:
-        return books[(page_num-1) * 5: len(books)]
+    return book_to_dict(book)
 
 
 def get_all_books(repo: AbstractRepository):
@@ -46,6 +19,13 @@ def get_all_books(repo: AbstractRepository):
         books_dto = books_to_dict(books)
     return books_dto
 
+
+def get_book_stock(book_id: int, repo: AbstractRepository):
+    return repo.get_book_stock(book_id)
+
+
+def get_book_price(book_id: int, repo: AbstractRepository):
+    return repo.get_book_price(book_id)
 
 
 # ============================================
@@ -58,7 +38,7 @@ def book_to_dict(book: Book):
         'title': book.title,
         'description': book.description,
         'publisher': book.publisher.name,
-        'authors': book.authors,
+        'authors': authors_to_dict(book.authors),
         'release_year': book.release_year,
         'ebook': book.ebook,
         'num_pages': book.num_pages
