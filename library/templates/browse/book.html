@@ -3,7 +3,10 @@
 <div class="book_container">
   <div class="individual_book_card">
     <h1>{{ book.title }}</h1>
-    <p><b>Author(s):</b> {{ authors }}</p>
+
+    {% set author_list = [] %} {% for author in book.authors %} {{
+    author.full_name if author_list.append(author.full_name) }} {% endfor %}
+    <p><b>Author(s):</b> {{author_list|join(", ")}}</p>
 
     <b>Description:</b>
     <p>{{ book.description }}</p>
@@ -20,7 +23,7 @@
     {% endif %}
 
     <p><b>Number in stock:</b> {{ stock }}</p>
-    <p><b>Price:</b> {{ price }}</p>
+    <p><b>Price:</b> ${{ price }}</p>
   </div>
   <div class="review_container">
     <div class="individual_book_card">

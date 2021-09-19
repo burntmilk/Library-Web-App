@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, redirect, url_for, session
 from math import ceil
 
 import library.adapters.repository as repo
@@ -8,43 +8,60 @@ browse_blueprint = Blueprint(
     'browse_bp', __name__)
 
 
-# @browse_blueprint.route('/browse', methods=['GET'])     # shows all books. shouldn't be used
-# def browse():
-#     books = services.get_books(repo.repo_instance)
-#
-#     return render_template(
-#         'browse/browse.html',
-#         books=books,
-#     )
+@browse_blueprint.route('/browse', methods=['GET'])
+def browse():
+    books_per_page = 5
 
+    page_num = request.args.get('page')  # cursor
+    if page_num is None:
+        page_num = 1
+    else:
+        page_num = int(page_num)
 
-@browse_blueprint.route('/browse/<page_num>', methods=['GET'])
-def browse_books(page_num):
-    # books = services.get_five_books(int(page_num), repo.repo_instance)
-    books = services.get_books(repo.repo_instance)
-    displayed_books = services.get_five_books(books, int(page_num))
+    # filter = request.args.get('filter')
+
+    books = services.get_all_books(repo.repo_instance)
+
+    # ----- NAVIGATION BUTTONS -----
+    next_page_url = None
+    prev_page_url = None
+    first_page_url = None
+    last_page_url = None
+
+    if page_num-1 > 0:
+        prev_page_url = url_for('browse_bp.browse', page=page_num-1)
+        first_page_url = url_for('browse_bp.browse')
+    if page_num * books_per_page < len(books):
+        next_page_url = url_for('browse_bp.browse', page=page_num+1)
+        last_page_url = url_for('browse_bp.browse', page=ceil(len(books) / books_per_page))
+
+    # -- Displaying limited amount of books per page --
+    if books_per_page * page_num < len(books):
+        books = books[(page_num - 1) * books_per_page: page_num * books_per_page]
+    else:
+        books = books[(page_num - 1) * books_per_page: len(books)]
 
     return render_template(
         'browse/browse.html',
         books=books,
-        displayed_books=displayed_books,
-        number_of_pages=ceil(len(books) / 5),
+        next_page_url=next_page_url,
+        prev_page_url=prev_page_url,
+        first_page_url=first_page_url,
+        last_page_url=last_page_url,
     )
 
 
-@browse_blueprint.route('/book/<book_id>', methods=['GET'])
-def show_book(book_id):
-    book_id = int(book_id)
+@browse_blueprint.route('/book', methods=['GET'])
+def show_book():
+    book_id = int(request.args.get('book_id'))
 
     book = services.get_book(book_id, repo.repo_instance)
-    authors = services.display_book_authors(book)
     stock = services.get_book_stock(book_id, repo.repo_instance)
     price = services.get_book_price(book_id, repo.repo_instance)
 
     return render_template(
         'browse/book.html',
         book=book,
-        authors=services.display_book_authors(book),
         stock=stock,
-        price=price,
+        price=price
     )
