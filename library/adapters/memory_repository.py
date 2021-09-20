@@ -8,7 +8,6 @@ from library.domain.model import Publisher, Author, Book, Review, User, BooksInv
 
 class MemoryRepository(AbstractRepository):
     def __init__(self):
-        # self.__books = []      # use BooksInventory class?
         self.__inventory = BooksInventory()
         self.__publishers = []
         self.__authors = []
@@ -17,7 +16,6 @@ class MemoryRepository(AbstractRepository):
 
     def add_book(self, book: Book):
         if self.__inventory.find_book(book.book_id) is None:    # check if already in library
-            # self.__books.append(book)
             self.__inventory.add_book(book, 0, 0)   # placeholder price + stock
 
     def get_books(self) -> List[Book]:

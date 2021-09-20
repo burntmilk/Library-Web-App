@@ -2,9 +2,7 @@
   <!-- <img id="logo" src="" alt="" /> -->
   <a class="btn-nav" href="{{ url_for('home_bp.home') }}">Home</a>
   <ul class="nav_links">
-    <li>
-      <a href="{{ url_for('browse_bp.browse_books', page_num=1) }}">Browse</a>
-    </li>
+    <li><a href="{{ url_for('browse_bp.browse') }}">Browse</a></li>
   </ul>
   <!-- {% if 'user_name' in session %}
         <a class="btn-nav" href="">Logout</a>
