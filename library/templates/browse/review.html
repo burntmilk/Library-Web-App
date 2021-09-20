@@ -1,0 +1,35 @@
+{% extends 'layout.html' %} {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="register_container">
+  <div class="review_card">
+    <h1>Write a review of: {{ book.title }}</h1>
+    <form method="POST" action="" class="form">
+      <div class="form-field">
+        <label for="rating"><h3>Rating:</h3><div class="wrapper">
+            <input type="checkbox" id="st1" value="1" />
+            <label for="st1"></label>
+            <input type="checkbox" id="st2" value="2" />
+            <label for="st2"></label>
+            <input type="checkbox" id="st3" value="3" />
+            <label for="st3"></label>
+            <input type="checkbox" id="st4" value="4" />
+            <label for="st4"></label>
+            <input type="checkbox" id="st5" value="5" />
+            <label for="st5"></label>
+          </div></label>
+        
+      <div class="form-field">
+        <label for="review_text"><h3>Write your review:</h3></label>
+        <textarea
+          type="text"
+          name="review_text"
+          class="review_input"
+          rows="30"
+        ></textarea>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

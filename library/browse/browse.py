@@ -66,3 +66,27 @@ def show_book():
         stock=stock,
         price=price
     )
+
+@browse_blueprint.route('/review', methods=['GET', 'POST'])
+def add_review():
+    book_id = int(request.args.get('book_id'))
+    book = services.get_book(book_id, repo.repo_instance)
+
+    
+    
+    # try:
+    #     review_text = request.form["review_text"]
+    #     rating = request.form["rating"]
+    #     services.add_review(book, review_text, rating)
+    #     return redirect(url_for('browse_bp.book', book_id))
+    # except services.NonExistentBookException:
+    #     book_nonexistent = "Book is non-existent"
+    # except services.ReviewFormInvalid:
+    #     review_form_invalid = "Please fill in all fields before submitting"
+    
+    return render_template(
+        'browse/review.html',
+        book=book,
+        # book_error=book_nonexistent,
+        # form_error=review_form_invalid
+    )

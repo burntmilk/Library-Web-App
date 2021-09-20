@@ -6,6 +6,9 @@ from library.domain.model import Publisher, Author, Book, Review, User, BooksInv
 class NonExistentBookException(Exception):
     pass
 
+class ReviewFormInvalid(Exception):
+    pass
+
 
 def get_book(book_id: int, repo: AbstractRepository) -> dict:
     book = repo.get_book(int(book_id))
@@ -68,4 +71,15 @@ def author_to_dict(author: Author):
 
 def authors_to_dict(authors: Iterable[Author]):
     return [author_to_dict(author) for author in authors]
+
+def add_review(book: Book, review_text: str, rating: int, repo: AbstractRepository):
+    if book is None:
+        raise NonExistentBookException
+    elif review_text is None or rating is None:
+        raise ReviewFormInvalid
+
+    review = Review(book, review_text, rating)
+    repo.add_review(review)
+    
+
 
