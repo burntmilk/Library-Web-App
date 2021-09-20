@@ -1,5 +1,6 @@
 import pytest   # python -m pytest -v tests
 from library import create_app
+
 from library.adapters import memory_repository
 from library.adapters.memory_repository import MemoryRepository
 from utils import get_project_root
@@ -16,6 +17,9 @@ def in_memory_repo():
 
 @pytest.fixture
 def client():
-    my_app = create_app()
-
+    my_app = create_app({
+        'TESTING': True,                                # Set to True during testing.
+        'TEST_DATA_PATH': TEST_DATA_PATH,               # Path for loading test data into the repository.
+        'WTF_CSRF_ENABLED': False                       # test_client will not send a CSRF token, so disable validation.
+    })
     return my_app.test_client()
