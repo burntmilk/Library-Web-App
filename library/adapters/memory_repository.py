@@ -30,6 +30,12 @@ class MemoryRepository(AbstractRepository):
     def get_book_price(self, book_id: int) -> int:
         return self.__inventory.find_price(book_id)
 
+    def search_books_by_title(self, title: str) -> List[Book]:
+        books = []
+        if title is not None:
+            books = [book for book in self.get_books() if title.lower() in book.title.lower()]
+        return books
+
 
 def load_books(data_path: Path, repo: MemoryRepository):    # makes list of book objects
     books_filename = str(Path(data_path) / "comic_books_excerpt.json")
