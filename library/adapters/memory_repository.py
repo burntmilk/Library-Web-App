@@ -30,6 +30,12 @@ class MemoryRepository(AbstractRepository):
     def get_book_price(self, book_id: int) -> int:
         return self.__inventory.find_price(book_id)
 
+    def get_user(self, user_name: str) -> User:
+        return next((user for user in self.__users if user.user_name==user_name),None)
+
+    def add_user(self, user: User):
+        self.__users.append(user)
+
 
 def load_books(data_path: Path, repo: MemoryRepository):    # makes list of book objects
     books_filename = str(Path(data_path) / "comic_books_excerpt.json")

@@ -35,10 +35,10 @@ class AbstractRepository(abc.ABC):
     def get_book_price(self, book_id: int) -> int:
         raise NotImplementedError
 
-    # @abc.abstractmethod
-    # def add_user(self, user: User):
-    #     raise NotImplementedError
-    #
-    # @abc.abstractmethod
-    # def get_user(self, user_name: str) -> User:
-    #     raise NotImplementedError
+    @abc.abstractmethod
+    def add_user(self, user: User):
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def get_user(self, user_name: str) -> User:
+        raise NotImplementedError
