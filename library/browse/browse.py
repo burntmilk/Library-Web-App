@@ -48,6 +48,7 @@ def browse():
         prev_page_url=prev_page_url,
         first_page_url=first_page_url,
         last_page_url=last_page_url,
+        page=page_num
     )
 
 

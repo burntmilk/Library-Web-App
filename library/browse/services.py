@@ -3,12 +3,14 @@ from library.adapters.repository import AbstractRepository
 from library.domain.model import Publisher, Author, Book, Review, User, BooksInventory
 
 
-# class EmptyBooksListException(Exception):
-#     pass
+class NonExistentBookException(Exception):
+    pass
 
 
 def get_book(book_id: int, repo: AbstractRepository) -> dict:
     book = repo.get_book(int(book_id))
+    if book is None:
+        raise NonExistentBookException
     return book_to_dict(book)
 
 
@@ -21,11 +23,17 @@ def get_all_books(repo: AbstractRepository) -> List[Book]:
 
 
 def get_book_stock(book_id: int, repo: AbstractRepository) -> int:
-    return repo.get_book_stock(book_id)
+    stock = repo.get_book_stock(book_id)
+    if stock is None:
+        raise NonExistentBookException
+    return stock
 
 
 def get_book_price(book_id: int, repo: AbstractRepository) -> int:
-    return repo.get_book_price(book_id)
+    price = repo.get_book_price(book_id)
+    if price is None:
+        raise NonExistentBookException
+    return price
 
 
 # ============================================
