@@ -156,12 +156,15 @@ h2 {
 
 .form {
   padding: 30px 0px 0px 0px;
+  display: flex;
+  flex-direction: column;
 }
 .form-field {
   padding: 15px 0px 0px 0px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-direction: column;
 }
 
 .register-btn-wrapper {
@@ -179,4 +182,8 @@ h2 {
 
 .form-label {
   font-size: 20px;
+}
+
+.errors li {
+  color: rgb(161, 52, 45);
 }
