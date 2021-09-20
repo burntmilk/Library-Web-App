@@ -1,14 +1,19 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from math import ceil
 
+from flask_wtf import FlaskForm
+from wtforms import TextAreaField, HiddenField, SubmitField
+from wtforms.validators import DataRequired, Length, ValidationError
+
 import library.adapters.repository as repo
 import library.browse.services as services
+
 
 browse_blueprint = Blueprint(
     'browse_bp', __name__)
 
 
-@browse_blueprint.route('/browse', methods=['GET'])
+@browse_blueprint.route('/browse', methods=['GET', 'POST'])
 def browse():
     books_per_page = 5
 
@@ -18,7 +23,12 @@ def browse():
     else:
         page_num = int(page_num)
 
-    # filter = request.args.get('filter')
+    filter_by = request.args.get('filter_by')
+    if filter_by is None:
+        filter_by = 'title'
+
+    form = SearchForm()
+    search = request.args.get('book_search_bar')
 
     books = services.get_all_books(repo.repo_instance)
 
@@ -29,11 +39,11 @@ def browse():
     last_page_url = None
 
     if page_num-1 > 0:
-        prev_page_url = url_for('browse_bp.browse', page=page_num-1)
-        first_page_url = url_for('browse_bp.browse')
+        prev_page_url = url_for('browse_bp.browse', page=page_num-1, filter_by=filter_by)
+        first_page_url = url_for('browse_bp.browse', filter_by=filter_by)
     if page_num * books_per_page < len(books):
-        next_page_url = url_for('browse_bp.browse', page=page_num+1)
-        last_page_url = url_for('browse_bp.browse', page=ceil(len(books) / books_per_page))
+        next_page_url = url_for('browse_bp.browse', page=page_num+1, filter_by=filter_by)
+        last_page_url = url_for('browse_bp.browse', page=ceil(len(books) / books_per_page), filter_by=filter_by)
 
     # -- Displaying limited amount of books per page --
     if books_per_page * page_num < len(books):
@@ -48,7 +58,9 @@ def browse():
         prev_page_url=prev_page_url,
         first_page_url=first_page_url,
         last_page_url=last_page_url,
-        page=page_num
+        page=page_num,
+        filter_by=filter_by,
+        form=form,
     )
 
 
@@ -66,3 +78,11 @@ def show_book():
         stock=stock,
         price=price
     )
+
+
+class SearchForm(FlaskForm):
+    search_entry = TextAreaField("Look for something: ", [
+        DataRequired(),
+        Length(min=1, message='Please enter something.'),
+    ])
+    submit = SubmitField("Search")

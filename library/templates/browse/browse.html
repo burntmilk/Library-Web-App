@@ -2,9 +2,10 @@
 <div class="browse_container">
   <h1>Browse Books</h1>
   <div>
-    <form class="book_search_form">
+    <form class="book_search_form" action="{{ url_for('browse_bp.browse') }}">
+
       <input class="book_search_bar" type="search" placeholder="Search" />
-      <select name="filter" class="filter_select">
+      <select name="filter_by" class="filter_select">
         <option value="title">Title</option>
         <option value="author">Author</option>
         <option value="release_year">Year</option>
