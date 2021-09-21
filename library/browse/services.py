@@ -45,12 +45,40 @@ def get_book_price(book_id: int, repo: AbstractRepository) -> int:
     return price
 
 
-def get_books_by_title(title: str, repo: AbstractRepository) -> List[Book]:
-    books = repo.search_books_by_title(title)
-    books_dto = []
-    if len(books) > 0:
-        books_dto = books_to_dict(books)
-    return books_dto
+# def get_books_by_title(title: str, repo: AbstractRepository) -> List[Book]:
+#     books = repo.search_books_by_title(title)
+#     books_dto = []
+#     if len(books) > 0:
+#         books_dto = books_to_dict(books)
+#     return books_dto
+
+
+def add_review(book: Book, review_text: str, rating: int, repo: AbstractRepository):
+    if book is None:
+        raise NonExistentBookException
+    elif review_text is None or rating is None:
+        raise ReviewFormInvalid
+
+    review = Review(book, review_text, rating)
+    print(review)
+    repo.add_review(review)
+
+
+def get_all_reviews(repo: AbstractRepository):
+    reviews = repo.get_reviews()
+    reviews_dto = []
+    if len(reviews) > 0:
+        reviews_dto = books_to_dict(reviews)
+    return reviews_dto
+
+
+def get_all_reviews_of_book(book: Book, repo: AbstractRepository):
+    reviews = repo.get_reviews()
+    reviews_dto = []
+    for review in reviews:
+        if review.book == book:
+            reviews_dto.append(review)
+    return reviews_dto
 
 
 # ============================================
@@ -86,16 +114,6 @@ def author_to_dict(author: Author):
 def authors_to_dict(authors: Iterable[Author]):
     return [author_to_dict(author) for author in authors]
 
-def add_review(book: Book, review_text: str, rating: int, repo: AbstractRepository):
-    if book is None:
-        raise NonExistentBookException
-    elif review_text is None or rating is None:
-        raise ReviewFormInvalid
-
-    review = Review(book, review_text, rating)
-    print(review)
-    repo.add_review(review)
-
 
 def review_to_dict(review: Review):
     review_dict = {
@@ -106,22 +124,8 @@ def review_to_dict(review: Review):
     }
     return review_dict
 
+
 def reviews_to_dict(reviews: Iterable[Review]):  # returns list of books in dict format
     return [review_to_dict(review) for review in reviews]
 
-
-def get_all_reviews(repo: AbstractRepository):
-    reviews = repo.get_reviews()
-    reviews_dto = []
-    if len(reviews) > 0:
-        reviews_dto = books_to_dict(reviews)
-    return reviews_dto
-
-def get_all_reviews_of_book(book: Book, repo: AbstractRepository):
-    reviews = repo.get_reviews()
-    reviews_dto = []
-    for review in reviews:
-        if review.book == book:
-            reviews_dto.append(review)
-    return reviews_dto
 

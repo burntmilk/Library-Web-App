@@ -45,7 +45,8 @@ class AbstractRepository(abc.ABC):
 
     @abc.abstractmethod
     def add_review(self, review: Review):
-        raise NotImplementedError
+        if review.book is None:
+            raise RepositoryException('No book attached to Review')
 
     @abc.abstractmethod
     def get_reviews(self) -> List[Review]:

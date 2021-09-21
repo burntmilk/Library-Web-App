@@ -12,7 +12,7 @@ class MemoryRepository(AbstractRepository):
         self.__publishers = []
         self.__authors = []
         self.__users = []
-        self.__reviews = [Review]
+        self.__reviews = []
 
     def add_book(self, book: Book):
         if self.__inventory.find_book(book.book_id) is None:    # check if already in library
@@ -31,15 +31,14 @@ class MemoryRepository(AbstractRepository):
         return self.__inventory.find_price(book_id)
 
     def get_user(self, user_name: str) -> User:
-        return next((user for user in self.__users if user.user_name==user_name),None)
+        return next((user for user in self.__users if user.user_name == user_name), None)
 
     def add_user(self, user: User):
         self.__users.append(user)
 
     def add_review(self, review: Review):
-        print(review)
+        super().add_review(review)
         self.__reviews.append(review)
-        print(self.__reviews)
 
     def get_reviews(self) -> List[Review]:
         return self.__reviews
