@@ -47,14 +47,6 @@ def get_book_price(book_id: int, repo: AbstractRepository) -> int:
     return price
 
 
-# def get_books_by_title(title: str, repo: AbstractRepository) -> List[Book]:
-#     books = repo.search_books_by_title(title)
-#     books_dto = []
-#     if len(books) > 0:
-#         books_dto = books_to_dict(books)
-#     return books_dto
-
-
 def add_review(book_id: int, review_text: str, rating: int, repo: AbstractRepository):
     book = repo.get_book(int(book_id))
     if book is None:
@@ -114,12 +106,12 @@ def review_to_dict(review: Review):
     review_dict = {
         'book': book_to_dict(review.book),
         'rating': review.rating,
-        'review_text': review.review_text
+        'review_text': review.review_text,
+        'timestamp': review.timestamp
     }
     return review_dict
 
 
 def reviews_to_dict(reviews: Iterable[Review]):
     return [review_to_dict(review) for review in reviews]
-
 
