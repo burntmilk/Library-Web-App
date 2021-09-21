@@ -36,6 +36,14 @@ def get_book_price(book_id: int, repo: AbstractRepository) -> int:
     return price
 
 
+def get_books_by_title(title: str, repo: AbstractRepository) -> List[Book]:
+    books = repo.search_books_by_title(title)
+    books_dto = []
+    if len(books) > 0:
+        books_dto = books_to_dict(books)
+    return books_dto
+
+
 # ============================================
 # Functions to convert model entities to dicts. model / repo data -> primitive
 # ============================================

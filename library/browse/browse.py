@@ -27,7 +27,15 @@ def browse():
     if filter_by is None:
         filter_by = 'title'
 
-    books = services.get_all_books(repo.repo_instance)
+    form = SearchForm()
+    books = []
+    if form.validate_on_submit():
+        print(filter_by)
+        search_entry = form.search_entry.data
+        if filter_by == 'title':
+            books = services.get_books_by_title(search_entry, repo.repo_instance)
+    else:
+        books = services.get_all_books(repo.repo_instance)
 
     # ----- NAVIGATION BUTTONS -----
     next_page_url = None
@@ -57,21 +65,19 @@ def browse():
         last_page_url=last_page_url,
         page=page_num,
         filter_by=filter_by,
+        form=form
     )
 
 
 @browse_blueprint.route('/search', methods=['GET', 'POST'])
 def search():
     form = SearchForm()
-    print("search")
     if form.validate_on_submit():
-        print('valid')
         return render_template(
             'browse/browse.html',
             filter_by=form.search_entry.data
         )
     else:
-        print('not valid')
         return render_template(
             'browse/search.html',
             form=form,
@@ -96,4 +102,4 @@ def show_book(book_id: int):
 
 class SearchForm(FlaskForm):
     search_entry = StringField("Search by:", [DataRequired()])
-    submit = SubmitField("Find")
+    submit = SubmitField("Search")
