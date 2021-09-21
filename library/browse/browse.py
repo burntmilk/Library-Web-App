@@ -60,13 +60,9 @@ def browse():
 
 @browse_blueprint.route('/book/<int:book_id>')
 def show_book(book_id: int):
-    # book_id = int(request.args.get('book_id'))
-
     book = services.get_book(book_id, repo.repo_instance)
     stock = services.get_book_stock(book_id, repo.repo_instance)
     price = services.get_book_price(book_id, repo.repo_instance)
-
-    # review_book = services.get_book_as_book(book_id, repo.repo_instance)
 
     reviews = services.get_all_reviews_of_book(book_id, repo.repo_instance)
 

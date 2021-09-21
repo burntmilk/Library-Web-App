@@ -63,18 +63,17 @@ def add_review(book_id: int, review_text: str, rating: int, repo: AbstractReposi
         raise ReviewFormInvalid
 
     review = Review(book, review_text, rating)
-    print(review)
     repo.add_review(review)
 
 
 def get_all_reviews_of_book(book_id: int, repo: AbstractRepository):
-    book = repo.get_book(int(book_id))
+    # book = repo.get_book(int(book_id))
     reviews = repo.get_reviews()
     reviews_dto = []
     for review in reviews:
-        if review.book == book:
+        if review.book.book_id == book_id:
             reviews_dto.append(review)
-    return reviews_dto
+    return reviews_to_dict(reviews_dto)
 
 
 # ============================================
@@ -113,7 +112,7 @@ def authors_to_dict(authors: Iterable[Author]):
 
 def review_to_dict(review: Review):
     review_dict = {
-        'book': review.book,
+        'book': book_to_dict(review.book),
         'rating': review.rating,
         'review_text': review.review_text
     }
