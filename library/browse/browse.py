@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, sessio
 from math import ceil
 
 from flask_wtf import FlaskForm
-from wtforms import TextAreaField, HiddenField, SubmitField
+from wtforms import TextAreaField, HiddenField, SubmitField, StringField
 from wtforms.validators import DataRequired, Length, ValidationError
 
 import library.adapters.repository as repo
@@ -26,9 +26,6 @@ def browse():
     filter_by = request.args.get('filter_by')
     if filter_by is None:
         filter_by = 'title'
-
-    form = SearchForm()
-    search = request.args.get('book_search_bar')
 
     books = services.get_all_books(repo.repo_instance)
 
@@ -60,13 +57,30 @@ def browse():
         last_page_url=last_page_url,
         page=page_num,
         filter_by=filter_by,
-        form=form,
     )
 
 
-@browse_blueprint.route('/book', methods=['GET'])
-def show_book():
-    book_id = int(request.args.get('book_id'))
+@browse_blueprint.route('/search', methods=['GET', 'POST'])
+def search():
+    form = SearchForm()
+    print("search")
+    if form.validate_on_submit():
+        print('valid')
+        return render_template(
+            'browse/browse.html',
+            filter_by=form.search_entry.data
+        )
+    else:
+        print('not valid')
+        return render_template(
+            'browse/search.html',
+            form=form,
+            handler_url=url_for('browse_bp.search')
+        )
+
+
+@browse_blueprint.route('/book/<int:book_id>')
+def show_book(book_id: int):
 
     book = services.get_book(book_id, repo.repo_instance)
     stock = services.get_book_stock(book_id, repo.repo_instance)
@@ -81,8 +95,5 @@ def show_book():
 
 
 class SearchForm(FlaskForm):
-    search_entry = TextAreaField("Look for something: ", [
-        DataRequired(),
-        Length(min=1, message='Please enter something.'),
-    ])
-    submit = SubmitField("Search")
+    search_entry = StringField("Search by:", [DataRequired()])
+    submit = SubmitField("Find")
