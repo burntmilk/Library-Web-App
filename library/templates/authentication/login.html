@@ -32,9 +32,9 @@
         {% if form.password.errors or password_error_message is not none %}
         <div>
           <ul class="errors">
-            {% if user_name_error_message is not none %}
-            <li>{{ user_name_error_message }}</li>
-            {% endif %} {% for error in form.user_name.errors %}
+            {% if password_error_message is not none %}
+            <li>{{ password_error_message }}</li>
+            {% endif %} {% for error in form.password.errors %}
             <li>{{ error }}</li>
             {% endfor %}
           </ul>

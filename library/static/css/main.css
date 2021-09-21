@@ -190,6 +190,10 @@ h2 {
   font-size: 20px;
 }
 
+.errors {
+  list-style: none;
+}
+
 .errors li {
   color: rgb(161, 52, 45);
 }
