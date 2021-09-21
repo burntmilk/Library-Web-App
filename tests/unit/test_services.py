@@ -51,3 +51,75 @@ def test_cannot_get_invalid_book_price(in_memory_repo):
     with pytest.raises(browse_services.NonExistentBookException):
         browse_services.get_book_price(book_id, in_memory_repo)
 
+
+def test_can_add_review(in_memory_repo):
+    book_id = 30128855
+    review_text = "test review"
+    rating = 5
+    browse_services.add_review(book_id, review_text, rating, in_memory_repo)
+    reviews_as_dict = browse_services.get_all_reviews_of_book(book_id, in_memory_repo)
+    assert next(
+        (dictionary['rating'] for dictionary in reviews_as_dict if dictionary['rating'] == rating),
+        None) is not None
+
+
+def test_cannot_add_review_for_invalid_book(in_memory_repo):
+    book_id = -1
+    review_text = "test review"
+    rating = 5
+    with pytest.raises(browse_services.NonExistentBookException):
+        browse_services.add_review(book_id, review_text, rating, in_memory_repo)
+
+
+def test_can_get_reviews_of_book(in_memory_repo):
+    book_id = 30128855
+    review_text = "test review"
+    rating = 5
+    browse_services.add_review(book_id, review_text, rating, in_memory_repo)
+    reviews_as_dict = browse_services.get_all_reviews_of_book(book_id, in_memory_repo)
+    assert len(reviews_as_dict) == 1
+
+
+def test_cannot_get_reviews_of_invalid_book(in_memory_repo):
+    book_id = -1
+    review_text = "test review"
+    rating = 5
+    with pytest.raises(browse_services.NonExistentBookException):
+        browse_services.get_all_reviews_of_book(book_id, in_memory_repo)
+
+
+def test_can_add_user(in_memory_repo):
+    new_user_name = 'jz'
+    new_password = 'abcd1A23'
+    auth_services.add_user(new_user_name, new_password, in_memory_repo)
+    user_as_dict = auth_services.get_user(new_user_name, in_memory_repo)
+    assert user_as_dict['user_name'] == new_user_name
+    assert user_as_dict['password'].startswith('pbkdf2:sha256:')
+
+
+def test_cannot_add_user_with_existing_name(in_memory_repo):
+    user_name = 'thorke'
+    password = 'abcd1A23'
+    auth_services.add_user(user_name, password, in_memory_repo)
+    with pytest.raises(auth_services.NameNotUniqueException):
+        auth_services.add_user(user_name, password, in_memory_repo)
+
+
+def test_authentication_with_valid_credentials(in_memory_repo):
+    new_user_name = 'pmccartney'
+    new_password = 'abcd1A23'
+    auth_services.add_user(new_user_name, new_password, in_memory_repo)
+    try:
+        auth_services.authenticate_user(new_user_name, new_password, in_memory_repo)
+    except AuthenticationException:
+        assert False
+
+
+def test_authentication_with_invalid_credentials(in_memory_repo):
+    new_user_name = 'pmccartney'
+    new_password = 'abcd1A23'
+    auth_services.add_user(new_user_name, new_password, in_memory_repo)
+    with pytest.raises(auth_services.AuthenticationException):
+        auth_services.authenticate_user(new_user_name, '0987654321', in_memory_repo)
+
+

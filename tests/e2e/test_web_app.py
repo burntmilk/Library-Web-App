@@ -25,7 +25,7 @@ def test_browse_page_num(client):   # test browse all books page with page num
 
 def test_book(client):
     book_id = 30128855
-    response = client.get('/book?book_id=30128855')
+    response = client.get('/book/30128855')
     assert response.status_code == 200
     assert b'Cruelle' in response.data
 

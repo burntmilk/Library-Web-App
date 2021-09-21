@@ -18,13 +18,6 @@ def get_book(book_id: int, repo: AbstractRepository) -> dict:
     return book_to_dict(book)
 
 
-def get_book_as_book(book_id: int, repo: AbstractRepository) -> Book:
-    book = repo.get_book(int(book_id))
-    if book is None:
-        raise NonExistentBookException
-    return book
-
-
 def get_all_books(repo: AbstractRepository) -> List[Book]:
     books = repo.get_books()
     books_dto = []
@@ -48,7 +41,7 @@ def get_book_price(book_id: int, repo: AbstractRepository) -> int:
 
 
 def add_review(book_id: int, review_text: str, rating: int, repo: AbstractRepository):
-    book = repo.get_book(int(book_id))
+    book = repo.get_book(book_id)
     if book is None:
         raise NonExistentBookException
     elif review_text is None or rating is None:
@@ -59,13 +52,16 @@ def add_review(book_id: int, review_text: str, rating: int, repo: AbstractReposi
 
 
 def get_all_reviews_of_book(book_id: int, repo: AbstractRepository):
-    # book = repo.get_book(int(book_id))
     reviews = repo.get_reviews()
     reviews_dto = []
-    for review in reviews:
-        if review.book.book_id == book_id:
-            reviews_dto.append(review)
-    return reviews_to_dict(reviews_dto)
+    book = repo.get_book(book_id)
+    if book is None:
+        raise NonExistentBookException
+    else:
+        for review in reviews:
+            if review.book == book:
+                reviews_dto.append(review)
+        return reviews_to_dict(reviews_dto)
 
 
 # ============================================
