@@ -50,3 +50,7 @@ class AbstractRepository(abc.ABC):
     @abc.abstractmethod
     def get_reviews(self) -> List[Review]:
         raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_authors(self) -> List[Author]:
+        raise NotImplementedError

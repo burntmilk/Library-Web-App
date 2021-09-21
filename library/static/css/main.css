@@ -6,8 +6,8 @@
   color: #24252a;
 }
 
-li,
-a,
+nav li,
+nav a,
 button {
   font-weight: 500;
   font-size: 16px;
@@ -57,24 +57,50 @@ button {
   padding: 50px 50px 30px 50px;
 }
 
-.book_search_bar {
-  padding: 9px 25px;
-  border-radius: 50px;
-  width: 83vw;
+.tabs-wrapper {
+  margin-left: 50px;
+  margin-right: 50px;
+  width: 90vw;
 }
 
-.book_search_bar:focus {
-  outline: none;
-  box-shadow: 0px 0px 2px #0066ff;
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  text-decoration: none;
+  list-style: none;
 }
 
-.book_search_form {
-  padding: 0px 0px 20px 50px;
+.letters_wrapper {
+  margin: 10px 0px 0px 0px;
+  height: 5vh;
+  padding: 10px 0px 10px 0px;
+  background: rgb(212, 212, 212);
+  display: flex;
+  justify-content: center;
 }
 
-.filter_select {
-  padding: 9px 5px;
-  border-radius: 50px;
+.letters {
+  padding: 0px 5px 0px 5px;
+  margin: 0;
+  overflow: auto;
+
+  display: flex;
+  justify-content: space-around;
+  float: left;
+  list-style: none;
+}
+
+.letters li {
+  margin-right: 0.3rem;
+  padding: 0.1rem;
+
+  background: rgb(41, 85, 85);
+  width: auto;
+  min-width: 16px;
+}
+.letters a {
+  color: #edf0f1;
+  cursor: pointer;
 }
 
 .book_card {

@@ -25,9 +25,15 @@ def browse():
     else:
         page_num = int(page_num)
 
-    # filter = request.args.get('filter')
+ 
 
     books = services.get_all_books(repo.repo_instance)
+
+    authors = services.get_authors(repo.repo_instance)
+    filter = None
+    filter = request.args.get('filter')
+
+
 
     # ----- NAVIGATION BUTTONS -----
     next_page_url = None
@@ -48,6 +54,9 @@ def browse():
     else:
         books = books[(page_num - 1) * books_per_page: len(books)]
 
+   
+    
+
     return render_template(
         'browse/browse.html',
         books=books,
@@ -55,7 +64,9 @@ def browse():
         prev_page_url=prev_page_url,
         first_page_url=first_page_url,
         last_page_url=last_page_url,
-        page=page_num
+        page=page_num,
+        filter=filter
+        
     )
 
 
@@ -114,3 +125,7 @@ class ReviewForm(FlaskForm):
     rating = RadioField('rating', choices=[('5', ''), ('4', ''), ('3', ''), ('2', ''), ('1', '')])
     review_text = TextAreaField('Write a Review:')
     submit = SubmitField('Submit Review')
+
+
+class BrowseForm(FlaskForm):
+    pass

@@ -44,6 +44,10 @@ def get_book_price(book_id: int, repo: AbstractRepository) -> int:
         raise NonExistentBookException
     return price
 
+def get_authors(repo: AbstractRepository) -> List[Author]:
+    authors = repo.get_authors
+
+
 
 # ============================================
 # Functions to convert model entities to dicts. model / repo data -> primitive

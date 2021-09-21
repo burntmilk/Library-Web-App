@@ -1,17 +1,60 @@
 {% extends 'layout.html' %} {% block content %}
 <div class="browse_container">
   <h1>Browse Books</h1>
-  <div>
-    <form class="book_search_form">
-      <input class="book_search_bar" type="search" placeholder="Search" />
-      <select name="filter" class="filter_select">
-        <option value="title">Title</option>
-        <option value="author">Author</option>
-        <option value="release_year">Year</option>
-        <option value="publisher">Publisher</option>
-      </select>
-      <button class="book_search_btn" type="submit">Search</button>
-    </form>
+  <div class="tabs-wrapper">
+    <ul class="tabs">
+      <li>
+        <a href="{{url_for('browse_bp.browse', filter='author')}}"
+          ><button>Browse by Author</button></a
+        >
+      </li>
+      <li>
+        <a href="{{url_for('browse_bp.browse', filter='publisher')}}"
+          ><button>Browse by Publisher</button></a
+        >
+      </li>
+      <li>
+        <a href="{{url_for('browse_bp.browse', filter='year')}}"
+          ><button>Browse by Year</button></a
+        >
+      </li>
+    </ul>
+  </div>
+  <div class="tabs-wrapper">
+    {% if filter == 'author' or filter == 'publisher' %}
+    <div class="letters_wrapper">
+      <ul class="letters">
+        <li><a>A</a></li>
+        <li><a>B</a></li>
+        <li><a>C</a></li>
+        <li><a>D</a></li>
+        <li><a>E</a></li>
+        <li><a>F</a></li>
+        <li><a>G</a></li>
+        <li><a>H</a></li>
+        <li><a>I</a></li>
+        <li><a>J</a></li>
+        <li><a>K</a></li>
+        <li><a>L</a></li>
+        <li><a>M</a></li>
+        <li><a>N</a></li>
+        <li><a>O</a></li>
+        <li><a>P</a></li>
+        <li><a>Q</a></li>
+        <li><a>R</a></li>
+        <li><a>S</a></li>
+        <li><a>T</a></li>
+        <li><a>U</a></li>
+        <li><a>V</a></li>
+        <li><a>W</a></li>
+        <li><a>X</a></li>
+        <li><a>Y</a></li>
+        <li><a>Z</a></li>
+        <li><a>Other</a></li>
+      </ul>
+    </div>
+
+    {% endif %}
   </div>
   <div class="content-container">
     {% for book in books %}
@@ -29,30 +72,38 @@
     {% endfor %}
   </div>
 
+  <footer>
+    <!-- page navigation -->
+    <nav style="clear: both">
+      <div style="float: left">
+        {% if first_page_url is not none %}
+        <button
+          class="btn-general"
+          onclick="location.href='{{first_page_url}}'"
+        >
+          First
+        </button>
+        {% endif %} {% if prev_page_url is not none %}
+        <button class="btn-general" onclick="location.href='{{prev_page_url}}'">
+          Previous Page
+        </button>
 
-  <footer>  <!-- page navigation -->
-    <nav style="clear:both">
-        <div style="float:left">
-            {% if first_page_url is not none %}
-                <button class="btn-general" onclick="location.href='{{first_page_url}}'">First</button>
-            {% endif %}
-            {% if prev_page_url is not none %}
-                <button class="btn-general" onclick="location.href='{{prev_page_url}}'">Previous Page</button>
-
-            {% endif %}
-        </div>
-        Page {{ page }}
-        <div style="float:right">
-            {% if next_page_url is not none %}
-                <button class="btn-general" onclick="location.href='{{next_page_url}}'">Next Page</button>
-            {% endif %}
-            {% if last_page_url is not none %}
-                <button class="btn-general" onclick="location.href='{{last_page_url}}'">Last</button>
-            {% endif %}
-        </div>
+        {% endif %}
+      </div>
+      Page {{ page }}
+      <div style="float: right">
+        {% if next_page_url is not none %}
+        <button class="btn-general" onclick="location.href='{{next_page_url}}'">
+          Next Page
+        </button>
+        {% endif %} {% if last_page_url is not none %}
+        <button class="btn-general" onclick="location.href='{{last_page_url}}'">
+          Last
+        </button>
+        {% endif %}
+      </div>
     </nav>
   </footer>
-
 </div>
 
 {% endblock %}
