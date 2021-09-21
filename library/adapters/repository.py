@@ -36,13 +36,17 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def search_books_by_title(self, title: str) -> List[Book]:
+    def add_user(self, user: User):
         raise NotImplementedError
 
-    # @abc.abstractmethod
-    # def add_user(self, user: User):
-    #     raise NotImplementedError
-    #
-    # @abc.abstractmethod
-    # def get_user(self, user_name: str) -> User:
-    #     raise NotImplementedError
+    @abc.abstractmethod
+    def get_user(self, user_name: str) -> User:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def add_review(self, review: Review):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_reviews(self) -> List[Review]:
+        raise NotImplementedError

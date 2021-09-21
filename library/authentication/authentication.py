@@ -8,9 +8,9 @@ from password_validator import PasswordValidator
 
 from functools import wraps
 
-# import covid.utilities.utilities as utilities
+import library.utilities.utilities as utilities
 import library.authentication.services as services
-# import covid.adapters.repository as repo
+import library.adapters.repository as repo
 
 # Configure Blueprint.
 authentication_blueprint = Blueprint(
@@ -35,13 +35,12 @@ def register():
 
     # For a GET or a failed POST request, return the Registration Web page.
     return render_template(
-        'authentication/credentials.html',
+        'authentication/register.html',
         title='Register',
         form=form,
         user_name_error_message=user_name_not_unique,
         handler_url=url_for('authentication_bp.register'),
-        selected_articles=utilities.get_selected_articles(),
-        tag_urls=utilities.get_tags_and_urls()
+        
     )
 
 
@@ -75,13 +74,12 @@ def login():
 
     # For a GET or a failed POST, return the Login Web page.
     return render_template(
-        'authentication/credentials.html',
+        'authentication/login.html',
         title='Login',
         user_name_error_message=user_name_not_recognised,
         password_error_message=password_does_not_match_user_name,
         form=form,
-        selected_articles=utilities.get_selected_articles(),
-        tag_urls=utilities.get_tags_and_urls()
+      
     )
 
 

@@ -1,19 +1,20 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from math import ceil
 
-from flask_wtf import FlaskForm
-from wtforms import TextAreaField, HiddenField, SubmitField, StringField
-from wtforms.validators import DataRequired, Length, ValidationError
+from flask_wtf.form import FlaskForm
+from wtforms.fields.core import RadioField
+from wtforms.fields.simple import SubmitField, TextAreaField
+from wtforms.validators import DataRequired
+from wtforms.widgets.core import RadioInput
 
 import library.adapters.repository as repo
 import library.browse.services as services
-
 
 browse_blueprint = Blueprint(
     'browse_bp', __name__)
 
 
-@browse_blueprint.route('/browse', methods=['GET', 'POST'])
+@browse_blueprint.route('/browse', methods=['GET'])
 def browse():
     books_per_page = 5
 
@@ -23,19 +24,9 @@ def browse():
     else:
         page_num = int(page_num)
 
-    filter_by = request.args.get('filter_by')
-    if filter_by is None:
-        filter_by = 'title'
+    # filter = request.args.get('filter')
 
-    form = SearchForm()
-    books = []
-    if form.validate_on_submit():
-        print(filter_by)
-        search_entry = form.search_entry.data
-        if filter_by == 'title':
-            books = services.get_books_by_title(search_entry, repo.repo_instance)
-    else:
-        books = services.get_all_books(repo.repo_instance)
+    books = services.get_all_books(repo.repo_instance)
 
     # ----- NAVIGATION BUTTONS -----
     next_page_url = None
@@ -43,12 +34,12 @@ def browse():
     first_page_url = None
     last_page_url = None
 
-    if page_num-1 > 0:
-        prev_page_url = url_for('browse_bp.browse', page=page_num-1, filter_by=filter_by)
-        first_page_url = url_for('browse_bp.browse', filter_by=filter_by)
+    if page_num - 1 > 0:
+        prev_page_url = url_for('browse_bp.browse', page=page_num - 1)
+        first_page_url = url_for('browse_bp.browse')
     if page_num * books_per_page < len(books):
-        next_page_url = url_for('browse_bp.browse', page=page_num+1, filter_by=filter_by)
-        last_page_url = url_for('browse_bp.browse', page=ceil(len(books) / books_per_page), filter_by=filter_by)
+        next_page_url = url_for('browse_bp.browse', page=page_num + 1)
+        last_page_url = url_for('browse_bp.browse', page=ceil(len(books) / books_per_page))
 
     # -- Displaying limited amount of books per page --
     if books_per_page * page_num < len(books):
@@ -63,43 +54,61 @@ def browse():
         prev_page_url=prev_page_url,
         first_page_url=first_page_url,
         last_page_url=last_page_url,
-        page=page_num,
-        filter_by=filter_by,
-        form=form
+        page=page_num
     )
 
 
-@browse_blueprint.route('/search', methods=['GET', 'POST'])
-def search():
-    form = SearchForm()
-    if form.validate_on_submit():
-        return render_template(
-            'browse/browse.html',
-            filter_by=form.search_entry.data
-        )
-    else:
-        return render_template(
-            'browse/search.html',
-            form=form,
-            handler_url=url_for('browse_bp.search')
-        )
-
-
-@browse_blueprint.route('/book/<int:book_id>')
-def show_book(book_id: int):
+@browse_blueprint.route('/book', methods=['GET'])
+def show_book():
+    book_id = int(request.args.get('book_id'))
 
     book = services.get_book(book_id, repo.repo_instance)
     stock = services.get_book_stock(book_id, repo.repo_instance)
     price = services.get_book_price(book_id, repo.repo_instance)
 
+    review_book = services.get_book_as_book(book_id, repo.repo_instance)
+
+    reviews = services.get_all_reviews_of_book(review_book, repo.repo_instance)
+
     return render_template(
         'browse/book.html',
         book=book,
         stock=stock,
-        price=price
+        price=price,
+        reviews=reviews
     )
 
 
-class SearchForm(FlaskForm):
-    search_entry = StringField("Search by:", [DataRequired()])
-    submit = SubmitField("Search")
+@browse_blueprint.route('/review', methods=['GET', 'POST'])
+def add_review():
+    book_id = int(request.args.get('book_id'))
+    book = services.get_book_as_book(book_id, repo.repo_instance)
+
+    form = ReviewForm()
+
+    book_nonexistent = None
+    review_form_empty = None
+
+    if form.validate_on_submit():
+        try:
+            services.add_review(book, form.review_text.data, int(form.rating.data), repo.repo_instance)
+            return redirect(url_for('browse_bp.show_book', book_id=book_id))
+        except services.NonExistentBookException:
+            book_nonexistent = 'Book does not exist'
+
+        except services.ReviewFormInvalid:
+            review_form_empty = 'Please fill in all fields before submitting'
+
+    return render_template(
+        'browse/review.html',
+        book=book,
+        book_error=book_nonexistent,
+        form_error=review_form_empty,
+        form=form
+    )
+
+
+class ReviewForm(FlaskForm):
+    rating = RadioField('rating', choices=[('5', ''), ('4', ''), ('3', ''), ('2', ''), ('1', '')])
+    review_text = TextAreaField('Write a Review:')
+    submit = SubmitField('Submit Review')
