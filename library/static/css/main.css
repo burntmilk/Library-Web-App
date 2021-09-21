@@ -207,12 +207,6 @@ h2 {
   width: 70vw;
 }
 
-.form-field-stars {
-  padding: 15px 0px 0px 0px;
-  display: flex;
-  justify-content: space-between;
-}
-
 .review_card form {
   width: 49vw;
 }
@@ -224,54 +218,52 @@ h2 {
 .review_card .form-field textarea {
   width: 49vw;
   font-size: 16px;
-}
-.wrapper {
-  position: relative;
-  display: inline-block;
-  border: none;
-  font-size: 14px;
-
-  left: 50%;
-  transform: translateX(-50%);
+  padding: 10px;
+  height: 50vh;
 }
 
-.wrapper input {
-  border: 0;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  position: absolute !important;
-  clip: rect(1px 1px 1px 1px);
-  clip: rect(1px, 1px, 1px, 1px);
-  opacity: 0;
+.stars {
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  margin-right: auto;
 }
-
-.wrapper label {
-  position: relative;
+.stars input {
+  display: none;
+}
+.stars label {
   float: right;
-  color: #c8c8c8;
+  font-size: 50px;
+  color: lightgrey;
+  margin: 0 5px;
 }
-
-.wrapper label:before {
-  margin: 5px;
-  content: "\f005";
-  font-family: FontAwesome;
-  display: inline-block;
-  font-size: 1.5em;
-  color: #ccc;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
+.stars label:before {
+  content: "★";
 }
-
-.wrapper input:checked ~ label:before {
-  color: #ffc107;
+.stars input:checked ~ label {
+  color: gold;
+  text-shadow: 1px 1px #c60;
 }
-
-.wrapper label:hover ~ label:before {
-  color: #ffdb70;
+.stars:not(:checked) > label:hover,
+.stars:not(:checked) > label:hover ~ label {
+  color: gold;
 }
-
-.wrapper label:hover:before {
-  color: #ffc107;
+.stars input:checked > label:hover,
+.stars input:checked > label:hover ~ label {
+  color: gold;
+  text-shadow: 1px 1px goldenrod;
+}
+.stars .result:before {
+  content: "";
+  width: 100%;
+  left: 50%;
+  bottom: -30px;
+  font-size: 30px;
+  font-weight: 500;
+  color: gold;
+  font-family: "Poppins", sans-serif;
+  display: none;
+}
+.stars input:checked ~ .result:before {
+  display: block;
 }

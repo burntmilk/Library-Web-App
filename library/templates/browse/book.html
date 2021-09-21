@@ -37,10 +37,13 @@
         >Login to write a review.</a
       >
       {% endif %}
+
       <h2><b>Reviews:</b></h2>
-      <p><b>Rating: </b></p>
-      <p>Reviewed on:</p>
-      <p></p>
+      {% for review in reviews %}
+      <p><b>Rating: {{ review.rating }}</b></p>
+      <p>Reviewed on: {{ review.timestamp }}</p>
+      <p>{{ review.review_text }}</p>
+      {% endfor %}
     </div>
   </div>
 </div>

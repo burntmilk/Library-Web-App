@@ -16,6 +16,12 @@ def get_book(book_id: int, repo: AbstractRepository) -> dict:
         raise NonExistentBookException
     return book_to_dict(book)
 
+def get_book_as_book(book_id: int, repo: AbstractRepository) -> Book:
+    book = repo.get_book(int(book_id))
+    if book is None:
+        raise NonExistentBookException
+    return book
+
 
 def get_all_books(repo: AbstractRepository) -> List[Book]:
     books = repo.get_books()
@@ -79,7 +85,35 @@ def add_review(book: Book, review_text: str, rating: int, repo: AbstractReposito
         raise ReviewFormInvalid
 
     review = Review(book, review_text, rating)
+    print(review)
     repo.add_review(review)
-    
 
+
+def review_to_dict(review: Review):
+    review_dict = {
+        'book': review.book,
+        'rating': review.rating,
+        'review_text': review.review_text
+        
+    }
+    return review_dict
+
+def reviews_to_dict(reviews: Iterable[Review]):  # returns list of books in dict format
+    return [review_to_dict(review) for review in reviews]
+
+
+def get_all_reviews(repo: AbstractRepository):
+    reviews = repo.get_reviews()
+    reviews_dto = []
+    if len(reviews) > 0:
+        reviews_dto = books_to_dict(reviews)
+    return reviews_dto
+
+def get_all_reviews_of_book(book: Book, repo: AbstractRepository):
+    reviews = repo.get_reviews()
+    reviews_dto = []
+    for review in reviews:
+        if review.book == book:
+            reviews_dto.append(review)
+    return reviews_dto
 

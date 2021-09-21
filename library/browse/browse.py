@@ -1,8 +1,15 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from math import ceil
 
+from flask_wtf.form import FlaskForm
+from wtforms.fields.core import RadioField
+from wtforms.fields.simple import SubmitField, TextAreaField
+from wtforms.validators import DataRequired
+from wtforms.widgets.core import RadioInput
+
 import library.adapters.repository as repo
 import library.browse.services as services
+
 
 browse_blueprint = Blueprint(
     'browse_bp', __name__)
@@ -60,33 +67,50 @@ def show_book():
     stock = services.get_book_stock(book_id, repo.repo_instance)
     price = services.get_book_price(book_id, repo.repo_instance)
 
+    review_book = services.get_book_as_book(book_id, repo.repo_instance)
+
+    reviews = services.get_all_reviews_of_book(review_book, repo.repo_instance)
+
     return render_template(
         'browse/book.html',
         book=book,
         stock=stock,
-        price=price
+        price=price,
+        reviews=reviews
     )
 
 @browse_blueprint.route('/review', methods=['GET', 'POST'])
 def add_review():
     book_id = int(request.args.get('book_id'))
-    book = services.get_book(book_id, repo.repo_instance)
+    book = services.get_book_as_book(book_id, repo.repo_instance)
+
+
+    form = ReviewForm()
 
     
-    
-    # try:
-    #     review_text = request.form["review_text"]
-    #     rating = request.form["rating"]
-    #     services.add_review(book, review_text, rating)
-    #     return redirect(url_for('browse_bp.book', book_id))
-    # except services.NonExistentBookException:
-    #     book_nonexistent = "Book is non-existent"
-    # except services.ReviewFormInvalid:
-    #     review_form_invalid = "Please fill in all fields before submitting"
+
+    book_nonexistent = None
+    review_form_empty = None
+
+    if form.validate_on_submit():
+        try:
+            services.add_review(book, form.review_text.data, int(form.rating.data), repo.repo_instance)
+            return redirect(url_for('browse_bp.show_book', book_id=book_id))
+        except services.NonExistentBookException:
+            book_nonexistent = 'Book does not exist'
+
+        except services.ReviewFormInvalid:
+            review_form_empty = 'Please fill in all fields before submitting'
     
     return render_template(
         'browse/review.html',
         book=book,
-        # book_error=book_nonexistent,
-        # form_error=review_form_invalid
+        book_error=book_nonexistent,
+        form_error=review_form_empty,
+        form=form
     )
+
+class ReviewForm(FlaskForm):
+    rating = RadioField('rating', choices=[('5', ''), ('4', ''), ('3', ''), ('2', ''), ('1', '')])
+    review_text = TextAreaField('Write a Review:')
+    submit = SubmitField('Submit Review')
