@@ -58,17 +58,17 @@ def browse():
     )
 
 
-@browse_blueprint.route('/book', methods=['GET'])
-def show_book():
-    book_id = int(request.args.get('book_id'))
+@browse_blueprint.route('/book/<int:book_id>')
+def show_book(book_id: int):
+    # book_id = int(request.args.get('book_id'))
 
     book = services.get_book(book_id, repo.repo_instance)
     stock = services.get_book_stock(book_id, repo.repo_instance)
     price = services.get_book_price(book_id, repo.repo_instance)
 
-    review_book = services.get_book_as_book(book_id, repo.repo_instance)
+    # review_book = services.get_book_as_book(book_id, repo.repo_instance)
 
-    reviews = services.get_all_reviews_of_book(review_book, repo.repo_instance)
+    reviews = services.get_all_reviews_of_book(book_id, repo.repo_instance)
 
     return render_template(
         'browse/book.html',
@@ -79,10 +79,9 @@ def show_book():
     )
 
 
-@browse_blueprint.route('/review', methods=['GET', 'POST'])
-def add_review():
-    book_id = int(request.args.get('book_id'))
-    book = services.get_book_as_book(book_id, repo.repo_instance)
+@browse_blueprint.route('/review/<int:book_id>', methods=['GET', 'POST'])
+def add_review(book_id: int):
+    book = services.get_book(book_id, repo.repo_instance)
 
     form = ReviewForm()
 
@@ -91,7 +90,7 @@ def add_review():
 
     if form.validate_on_submit():
         try:
-            services.add_review(book, form.review_text.data, int(form.rating.data), repo.repo_instance)
+            services.add_review(book_id, form.review_text.data, int(form.rating.data), repo.repo_instance)
             return redirect(url_for('browse_bp.show_book', book_id=book_id))
         except services.NonExistentBookException:
             book_nonexistent = 'Book does not exist'

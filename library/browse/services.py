@@ -6,6 +6,7 @@ from library.domain.model import Publisher, Author, Book, Review, User, BooksInv
 class NonExistentBookException(Exception):
     pass
 
+
 class ReviewFormInvalid(Exception):
     pass
 
@@ -15,6 +16,7 @@ def get_book(book_id: int, repo: AbstractRepository) -> dict:
     if book is None:
         raise NonExistentBookException
     return book_to_dict(book)
+
 
 def get_book_as_book(book_id: int, repo: AbstractRepository) -> Book:
     book = repo.get_book(int(book_id))
@@ -53,7 +55,8 @@ def get_book_price(book_id: int, repo: AbstractRepository) -> int:
 #     return books_dto
 
 
-def add_review(book: Book, review_text: str, rating: int, repo: AbstractRepository):
+def add_review(book_id: int, review_text: str, rating: int, repo: AbstractRepository):
+    book = repo.get_book(int(book_id))
     if book is None:
         raise NonExistentBookException
     elif review_text is None or rating is None:
@@ -64,15 +67,8 @@ def add_review(book: Book, review_text: str, rating: int, repo: AbstractReposito
     repo.add_review(review)
 
 
-def get_all_reviews(repo: AbstractRepository):
-    reviews = repo.get_reviews()
-    reviews_dto = []
-    if len(reviews) > 0:
-        reviews_dto = books_to_dict(reviews)
-    return reviews_dto
-
-
-def get_all_reviews_of_book(book: Book, repo: AbstractRepository):
+def get_all_reviews_of_book(book_id: int, repo: AbstractRepository):
+    book = repo.get_book(int(book_id))
     reviews = repo.get_reviews()
     reviews_dto = []
     for review in reviews:
@@ -120,12 +116,11 @@ def review_to_dict(review: Review):
         'book': review.book,
         'rating': review.rating,
         'review_text': review.review_text
-        
     }
     return review_dict
 
 
-def reviews_to_dict(reviews: Iterable[Review]):  # returns list of books in dict format
+def reviews_to_dict(reviews: Iterable[Review]):
     return [review_to_dict(review) for review in reviews]
 
 

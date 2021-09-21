@@ -1,5 +1,7 @@
 import pytest
 from library.browse import services as browse_services
+from library.authentication import services as auth_services
+from library.authentication.services import AuthenticationException
 
 
 def test_can_get_book(in_memory_repo):
