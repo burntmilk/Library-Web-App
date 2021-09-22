@@ -19,7 +19,7 @@ browse_blueprint = Blueprint(
 
 @browse_blueprint.route('/browse', methods=['GET'])
 def browse():
-    books_per_page = 2
+    books_per_page = 5
 
     page_num = request.args.get('page')  # cursor
     if page_num is None:
@@ -27,13 +27,10 @@ def browse():
     else:
         page_num = int(page_num)
 
-    # authors = services.get_authors(repo.repo_instance)
-    filter = None
-    filter = request.args.get('filter')
-    letter = request.args.get('letter')
 
     # ============ book filtering template code ===========================
-
+    filter = request.args.get('filter')
+    letter = request.args.get('letter')
     books = services.get_all_books(repo.repo_instance)
     if letter is not None:
         if filter == 'author':
@@ -64,7 +61,6 @@ def browse():
         books = books[(page_num - 1) * books_per_page: len(books)]
 
     letters_list = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-    
 
     return render_template(
         'browse/browse.html',
