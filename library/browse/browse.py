@@ -19,7 +19,7 @@ browse_blueprint = Blueprint(
 
 @browse_blueprint.route('/browse', methods=['GET'])
 def browse():
-    books_per_page = 2
+    books_per_page = 5
 
     page_num = request.args.get('page')  # cursor
     if page_num is None:
