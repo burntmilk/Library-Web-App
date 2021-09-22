@@ -1,0 +1,57 @@
+{% extends 'layout.html' %} {% block content %}
+<div class="register_container">
+  <div class="register_card">
+    <h1>Login</h1>
+    <form method="POST" action="{{ handler_url }}" class="form">
+      {{ form.csrf_token }}
+      <!-- Need to include this token - Flask WTForms requires it. -->
+      <div class="form-field">
+        <div>
+          {{ form.user_name.label(class="form-label") }} {{
+          form.user_name(class="form-input") }}
+        </div>
+
+        {% if form.user_name.errors or user_name_error_message is not none %}
+        <div>
+          <ul class="errors">
+            {% if user_name_error_message is not none %}
+            <li>{{ user_name_error_message }}</li>
+            {% endif %} {% for error in form.user_name.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        {% endif %}
+      </div>
+      <div class="form-field">
+        <div>
+          {{ form.password.label(class="form-label") }} {{
+          form.password(class="form-input") }}
+        </div>
+        {% if form.password.errors or password_error_message is not none %}
+        <div>
+          <ul class="errors">
+            {% if password_error_message is not none %}
+            <li>{{ password_error_message }}</li>
+            {% endif %} {% for error in form.password.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+      <div class="register-btn-wrapper">{{ form.submit(class="button") }}</div>
+    </form>
+  </div>
+  <div class="register_card">
+    <h2>
+      New user?
+      <a href="{{ url_for('authentication_bp.register') }}"
+        >Create an account.</a
+      >
+    </h2>
+  </div>
+</div>
+
+{% endblock %}

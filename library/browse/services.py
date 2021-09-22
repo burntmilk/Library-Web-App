@@ -7,6 +7,10 @@ class NonExistentBookException(Exception):
     pass
 
 
+class ReviewFormInvalid(Exception):
+    pass
+
+
 def get_book(book_id: int, repo: AbstractRepository) -> dict:
     book = repo.get_book(int(book_id))
     if book is None:
@@ -34,6 +38,30 @@ def get_book_price(book_id: int, repo: AbstractRepository) -> int:
     if price is None:
         raise NonExistentBookException
     return price
+
+
+def add_review(book_id: int, review_text: str, rating: int, repo: AbstractRepository):
+    book = repo.get_book(book_id)
+    if book is None:
+        raise NonExistentBookException
+    elif review_text is None or rating is None:
+        raise ReviewFormInvalid
+
+    review = Review(book, review_text, rating)
+    repo.add_review(review)
+
+
+def get_all_reviews_of_book(book_id: int, repo: AbstractRepository):
+    reviews = repo.get_reviews()
+    reviews_dto = []
+    book = repo.get_book(book_id)
+    if book is None:
+        raise NonExistentBookException
+    else:
+        for review in reviews:
+            if review.book == book:
+                reviews_dto.append(review)
+        return reviews_to_dict(reviews_dto)
 
 
 # ============================================
@@ -68,4 +96,18 @@ def author_to_dict(author: Author):
 
 def authors_to_dict(authors: Iterable[Author]):
     return [author_to_dict(author) for author in authors]
+
+
+def review_to_dict(review: Review):
+    review_dict = {
+        'book': book_to_dict(review.book),
+        'rating': review.rating,
+        'review_text': review.review_text,
+        'timestamp': review.timestamp
+    }
+    return review_dict
+
+
+def reviews_to_dict(reviews: Iterable[Review]):
+    return [review_to_dict(review) for review in reviews]
 
