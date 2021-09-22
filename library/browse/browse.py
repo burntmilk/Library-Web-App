@@ -62,11 +62,11 @@ def browse():
     last_page_url = None
 
     if page_num - 1 > 0:
-        prev_page_url = url_for('browse_bp.browse', page=page_num - 1)
-        first_page_url = url_for('browse_bp.browse')
+        prev_page_url = url_for('browse_bp.browse', filter=filter, letter=letter, page=page_num - 1)
+        first_page_url = url_for('browse_bp.browse', filter=filter, letter=letter)
     if page_num * books_per_page < len(books):
-        next_page_url = url_for('browse_bp.browse', page=page_num + 1)
-        last_page_url = url_for('browse_bp.browse', page=ceil(len(books) / books_per_page))
+        next_page_url = url_for('browse_bp.browse', filter=filter, letter=letter, page=page_num + 1)
+        last_page_url = url_for('browse_bp.browse', filter=filter, letter=letter, page=ceil(len(books) / books_per_page))
 
     # -- Displaying limited amount of books per page --
     if books_per_page * page_num < len(books):
