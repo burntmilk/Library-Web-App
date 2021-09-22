@@ -1,15 +1,17 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from math import ceil
-# from datetime import date
+from better_profanity import profanity
 
 from flask_wtf.form import FlaskForm
 from wtforms.fields.core import RadioField
 from wtforms.fields.simple import SubmitField, TextAreaField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, ValidationError
 from wtforms.widgets.core import RadioInput
 
 import library.adapters.repository as repo
 import library.browse.services as services
+
+from library.authentication.authentication import login_required
 
 browse_blueprint = Blueprint(
     'browse_bp', __name__)
@@ -77,9 +79,9 @@ def show_book(book_id: int):
 
 
 @browse_blueprint.route('/review/<int:book_id>', methods=['GET', 'POST'])
+@login_required
 def add_review(book_id: int):
     book = services.get_book(book_id, repo.repo_instance)
-
     form = ReviewForm()
 
     book_nonexistent = None
@@ -104,7 +106,20 @@ def add_review(book_id: int):
     )
 
 
+class ProfanityFree:
+    def __init__(self, message=None):
+        if not message:
+            message = u'Field must not contain profanity'
+        self.message = message
+
+    def __call__(self, form, field):
+        if profanity.contains_profanity(field.data):
+            raise ValidationError(self.message)
+
+
 class ReviewForm(FlaskForm):
     rating = RadioField('rating', choices=[('5', ''), ('4', ''), ('3', ''), ('2', ''), ('1', '')])
-    review_text = TextAreaField('Write a Review:')
+    review_text = TextAreaField('Write a Review:', [
+        ProfanityFree(message="Your review must not contain profanity.")
+    ])
     submit = SubmitField('Submit Review')

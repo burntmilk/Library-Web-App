@@ -31,9 +31,40 @@ def test_book(client):
 
 
 def test_review(client, auth):  # TODO: finish off review tests
+    client.post(
+        '/authentication/register',
+        data={'user_name': 'username', 'password': 'Password1'}
+    )   # create existing user
     auth.login()
     response = client.get('/review/30128855')
-    pass
+    response = client.post(
+        '/review/30128855',
+        data={'review_text': "test review", 'rating': 5, 'book_id': 30128855}
+    )
+    assert response.headers['Location'] == 'http://localhost/book/30128855'
+
+
+def test_login_required_to_review(client):
+    response = client.post('/review/30128855')
+    assert response.headers['Location'] == 'http://localhost/authentication/login'
+
+
+@pytest.mark.parametrize(('review_text', 'messages'), (
+        ('poop is a bad word', (b'Your review must not contain profanity.')),
+        ('so is pee', (b'Your review must not contain profanity.'))
+))
+def test_review_with_invalid_input(client, auth, review_text, messages):  # check against profanity
+    client.post(
+        '/authentication/register',
+        data={'user_name': 'username', 'password': 'Password1'}
+    )   # create existing user
+    auth.login()
+    response = client.post(
+        '/review/30128855',
+        data={'review_text': review_text, 'rating': 5, 'book_id': 30128855}
+    )
+    for message in messages:
+        assert message in response.data
 
 
 def test_register(client):
@@ -58,7 +89,7 @@ def test_register_with_invalid_input(client, user_name, password, message):
     client.post(
         '/authentication/register',
         data={'user_name': 'fmercury', 'password': 'Test#6^0'}
-    )   # create existing user
+    )   # create existing user first
     response = client.post(
         '/authentication/register',
         data={'user_name': user_name, 'password': password}
