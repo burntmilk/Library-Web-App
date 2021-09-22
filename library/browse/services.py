@@ -64,22 +64,22 @@ def get_all_reviews_of_book(book_id: int, repo: AbstractRepository):
         return reviews_to_dict(reviews_dto)
 
 
-def get_books_by_author(letter: str, repo: AbstractRepository):
+def get_books_by_author_initial(letter: str, repo: AbstractRepository):
     books = repo.get_books_by_author_initial(letter)
     return books_to_dict(books)
 
 
-def get_books_by_publisher(letter: str, repo: AbstractRepository):
+def get_books_by_publisher_initial(letter: str, repo: AbstractRepository):
     books = repo.get_books_by_publisher_initial(letter)
     return books_to_dict(books)
 
 
-def get_all_years(repo: AbstractRepository):
+def get_book_years(repo: AbstractRepository):
     years = repo.get_book_years()
     return years
 
 
-def get_books_with_none(repo: AbstractRepository):
+def get_books_with_no_year(repo: AbstractRepository):
     no_year_books = repo.get_books_with_no_year()
     return books_to_dict(no_year_books)
 

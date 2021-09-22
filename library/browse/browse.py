@@ -35,17 +35,17 @@ def browse():
     books = services.get_all_books(repo.repo_instance)
     if letter is not None:
         if filter == 'author':
-            books = services.get_books_by_author(letter, repo.repo_instance)
+            books = services.get_books_by_author_initial(letter, repo.repo_instance)
         elif filter == 'publisher':
-            books = services.get_books_by_publisher(letter, repo.repo_instance)
+            books = services.get_books_by_publisher_initial(letter, repo.repo_instance)
     if year is not None:
         if year == 'None':
-            books = services.get_books_with_none(repo.repo_instance)
+            books = services.get_books_with_no_year(repo.repo_instance)
         else:
             year = int(year)
             books = services.get_books_by_year(year, repo.repo_instance)
 
-    year_list = services.get_all_years(repo.repo_instance)
+    year_list = services.get_book_years(repo.repo_instance)
 
     # ----- NAVIGATION BUTTONS -----
     next_page_url = None
