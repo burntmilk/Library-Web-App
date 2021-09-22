@@ -50,6 +50,23 @@
         {% endfor %}
       </ul>
     </div>
+    {% elif filter == 'year' %}
+    <div class="letters_wrapper">
+      <ul class="letters">
+        {% for year in year_list %}
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='year', year=year)}}"
+            >{{ year }}</a
+          >
+        </li>
+        {% endfor %}
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='year', year='None')}}"
+            >None</a
+          >
+        </li>
+      </ul>
+    </div>
     {% endif %}
   </div>
 

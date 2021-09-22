@@ -39,14 +39,12 @@
       {% endif %}
 
       <h2><b>Reviews:</b></h2>
-      {% if reviews %}
-        {% for review in reviews %}
-        <p><b>Rating: {{ review.rating }}</b></p>
-        <p>Reviewed on: {{ review.timestamp }}</p>
-        <p>{{ review.review_text }}</p>
-        {% endfor %}
-      {% else %}
-        <p>There are no reviews yet. </p>
+      {% if reviews %} {% for review in reviews %}
+      <p><b>Rating: {{ review.rating }}</b></p>
+      <p>Reviewed on: {{ review.timestamp }}</p>
+      <p>{{ review.review_text }}</p>
+      {% endfor %} {% else %}
+      <p>There are no reviews yet.</p>
       {% endif %}
     </div>
   </div>

@@ -6,7 +6,7 @@ from flask_wtf.form import FlaskForm
 from wtforms.fields.core import RadioField
 from wtforms.fields.simple import SubmitField, TextAreaField
 from wtforms.validators import DataRequired, ValidationError
-from wtforms.widgets.core import RadioInput
+
 
 import library.adapters.repository as repo
 import library.browse.services as services
@@ -28,18 +28,39 @@ def browse():
         page_num = int(page_num)
 
 
-    # ============ book filtering template code ===========================
+    
+
+    # authors = services.get_authors(repo.repo_instance)
+    filter = None
     filter = request.args.get('filter')
     letter = request.args.get('letter')
-    books = services.get_all_books(repo.repo_instance)
-    if letter is not None:
-        if filter == 'author':
-            books = services.get_books_by_author(letter, repo.repo_instance)
-        elif filter == 'publisher':
-            books = services.get_books_by_publisher(letter, repo.repo_instance)
-        # elif filter == 'year':
-        #     books = services.get_books_by_year(year, repo.repo_instance)
+    year = request.args.get('year')
+    print(year == None)
 
+    if filter == 'author':
+        if letter is None:
+            books = services.get_all_books(repo.repo_instance)
+        else:
+            books = services.get_books_by_author(letter, repo.repo_instance)
+    elif filter == 'publisher':
+        if letter is None:
+            books = services.get_all_books(repo.repo_instance)
+        else:
+            books = services.get_books_by_publisher(letter, repo.repo_instance)
+    elif filter == 'year':
+        if year is None:
+            books = services.get_all_books(repo.repo_instance)
+        elif year == 'None':
+            books = services.get_books_with_none(repo.repo_instance)
+        else:
+            year = int(year)
+            books = services.get_books_by_year(year, repo.repo_instance)
+
+
+    else:
+        books = services.get_all_books(repo.repo_instance)
+
+    year_list = services.get_all_years(repo.repo_instance)
 
     # ----- NAVIGATION BUTTONS -----
     next_page_url = None
@@ -48,11 +69,11 @@ def browse():
     last_page_url = None
 
     if page_num - 1 > 0:
-        prev_page_url = url_for('browse_bp.browse', page=page_num - 1, filter=filter, letter=letter)
-        first_page_url = url_for('browse_bp.browse', filter=filter, letter=letter)
+        prev_page_url = url_for('browse_bp.browse', filter=filter, letter=letter, year=year, page=page_num - 1)
+        first_page_url = url_for('browse_bp.browse', filter=filter, letter=letter, year=year)
     if page_num * books_per_page < len(books):
-        next_page_url = url_for('browse_bp.browse', page=page_num + 1, filter=filter, letter=letter)
-        last_page_url = url_for('browse_bp.browse', page=ceil(len(books) / books_per_page), filter=filter, letter=letter)
+        next_page_url = url_for('browse_bp.browse', filter=filter, letter=letter, year=year, page=page_num + 1)
+        last_page_url = url_for('browse_bp.browse', filter=filter, letter=letter, year=year, page=ceil(len(books) / books_per_page))
 
     # -- Displaying limited amount of books per page --
     if books_per_page * page_num < len(books):
@@ -61,6 +82,7 @@ def browse():
         books = books[(page_num - 1) * books_per_page: len(books)]
 
     letters_list = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    
 
     return render_template(
         'browse/browse.html',
@@ -71,7 +93,8 @@ def browse():
         last_page_url=last_page_url,
         page=page_num,
         filter=filter,
-        letters_list=letters_list
+        letters_list=letters_list,
+        year_list=year_list
         
     )
 
