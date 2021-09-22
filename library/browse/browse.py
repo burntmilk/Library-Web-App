@@ -74,7 +74,7 @@ def browse():
     else:
         books = books[(page_num - 1) * books_per_page: len(books)]
 
-   
+    letters_list = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
     
 
     return render_template(
@@ -85,7 +85,8 @@ def browse():
         first_page_url=first_page_url,
         last_page_url=last_page_url,
         page=page_num,
-        filter=filter
+        filter=filter,
+        letters_list=letters_list
         
     )
 

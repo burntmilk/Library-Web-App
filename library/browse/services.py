@@ -68,7 +68,7 @@ def get_books_by_author(letter: str, repo: AbstractRepository):
     books_dto = []
     for book in books:
         for author in book.authors:
-            if author.full_name[0].lower() == letter:
+            if author.full_name[0].upper() == letter:
                 books_dto.append(book)
                 break
 
@@ -80,7 +80,7 @@ def get_books_by_publisher(letter, repo: AbstractRepository):
     books = repo.get_books()
     books_dto = []
     for book in books:
-        if book.publisher.name[0].lower() == letter:
+        if book.publisher.name[0].upper() == letter:
             books_dto.append(book)
             
 
