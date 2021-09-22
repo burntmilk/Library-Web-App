@@ -19,7 +19,7 @@ def get_book(book_id: int, repo: AbstractRepository) -> dict:
 
 
 def get_all_books(repo: AbstractRepository) -> List[Book]:
-    books = repo.get_books()
+    books = repo.get_all_books()
     books_dto = []
     if len(books) > 0:
         books_dto = books_to_dict(books)
@@ -65,67 +65,33 @@ def get_all_reviews_of_book(book_id: int, repo: AbstractRepository):
 
 
 def get_books_by_author(letter: str, repo: AbstractRepository):
-    books = repo.get_books()
-    books_dto = []
-    for book in books:
-        for author in book.authors:
-            if author.full_name[0].upper() == letter:
-                books_dto.append(book)
-                break
+    books = repo.get_books_by_author_initial(letter)
+    return books_to_dict(books)
 
-    books_dto = books_to_dict(books_dto)
-
-    return books_dto
 
 def get_books_by_publisher(letter: str, repo: AbstractRepository):
-    books = repo.get_books()
-    books_dto = []
-    for book in books:
-        if book.publisher.name[0].upper() == letter:
-            books_dto.append(book)
+    books = repo.get_books_by_publisher_initial(letter)
+    return books_to_dict(books)
 
-
-    books_dto = books_to_dict(books_dto)
-
-    return books_dto
 
 def get_all_years(repo: AbstractRepository):
-    books = repo.get_books()
-    years = []
-    for book in books:
-        if book.release_year not in years and book.release_year != None:
-            years.append(book.release_year)
+    years = repo.get_book_years()
+    return years
 
-    return sorted(years)
 
 def get_books_with_none(repo: AbstractRepository):
-    books = repo.get_books()
-    books_dto = []
-    for book in books:
-        if book.release_year == None:
-            books_dto.append(book)
-
-
-    books_dto = books_to_dict(books_dto)
-
-    return books_dto
+    no_year_books = repo.get_books_with_no_year()
+    return books_to_dict(no_year_books)
 
 
 def get_books_by_year(year: int, repo: AbstractRepository):
-    books = repo.get_books()
-    books_dto = []
-    for book in books:
-        if book.release_year == year:
-            books_dto.append(book)
-
-
-    books_dto = books_to_dict(books_dto)
-
-    return books_dto
+    books_with_year = repo.get_books_by_year(year)
+    return books_to_dict(books_with_year)
 
 # ============================================
 # Functions to convert model entities to dicts. model / repo data -> primitive
 # ============================================
+
 
 def book_to_dict(book: Book):
     book_dict = {

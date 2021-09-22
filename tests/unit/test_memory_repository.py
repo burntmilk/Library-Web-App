@@ -17,7 +17,7 @@ def test_repo_can_retrieve_book(in_memory_repo):
 
 
 def test_repo_can_get_all_books(in_memory_repo):
-    books = in_memory_repo.get_books()
+    books = in_memory_repo.get_all_books()
     assert len(books) == 20
 
 
