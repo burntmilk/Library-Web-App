@@ -19,7 +19,7 @@ browse_blueprint = Blueprint(
 
 @browse_blueprint.route('/browse', methods=['GET'])
 def browse():
-    books_per_page = 5
+    books_per_page = 2
 
     page_num = request.args.get('page')  # cursor
     if page_num is None:
@@ -27,33 +27,22 @@ def browse():
     else:
         page_num = int(page_num)
 
- 
-
-    
-
     # authors = services.get_authors(repo.repo_instance)
     filter = None
     filter = request.args.get('filter')
+    letter = request.args.get('letter')
 
     # ============ book filtering template code ===========================
 
-    if filter == 'author':
-        letter = request.args.get('letter')
-        if letter is None:
-            books = services.get_all_books(repo.repo_instance)
-        else:
+    books = services.get_all_books(repo.repo_instance)
+    if letter is not None:
+        if filter == 'author':
             books = services.get_books_by_author(letter, repo.repo_instance)
-    elif filter == 'publisher':
-        letter = request.args.get('letter')
-        if letter is None:
-            books = services.get_all_books(repo.repo_instance)
-        else:
+        elif filter == 'publisher':
             books = services.get_books_by_publisher(letter, repo.repo_instance)
-    # elif filter == 'year':
-    #     books = services.get_books_by_year(year, repo.repo_instance)
-    else:
+        # elif filter == 'year':
+        #     books = services.get_books_by_year(year, repo.repo_instance)
 
-        books = services.get_all_books(repo.repo_instance)
 
     # ----- NAVIGATION BUTTONS -----
     next_page_url = None
@@ -62,11 +51,11 @@ def browse():
     last_page_url = None
 
     if page_num - 1 > 0:
-        prev_page_url = url_for('browse_bp.browse', page=page_num - 1)
-        first_page_url = url_for('browse_bp.browse')
+        prev_page_url = url_for('browse_bp.browse', page=page_num - 1, filter=filter, letter=letter)
+        first_page_url = url_for('browse_bp.browse', filter=filter, letter=letter)
     if page_num * books_per_page < len(books):
-        next_page_url = url_for('browse_bp.browse', page=page_num + 1)
-        last_page_url = url_for('browse_bp.browse', page=ceil(len(books) / books_per_page))
+        next_page_url = url_for('browse_bp.browse', page=page_num + 1, filter=filter, letter=letter)
+        last_page_url = url_for('browse_bp.browse', page=ceil(len(books) / books_per_page), filter=filter, letter=letter)
 
     # -- Displaying limited amount of books per page --
     if books_per_page * page_num < len(books):
