@@ -1,6 +1,7 @@
 {% extends 'layout.html' %} {% block content %}
 <div class="browse_container">
-  <h1>Browse Books</h1>
+  <h1>Browse books {% if filter %} by {{filter}}{% endif %}</h1>
+
   <div class="tabs-wrapper">
     <ul class="tabs">
       <li>
