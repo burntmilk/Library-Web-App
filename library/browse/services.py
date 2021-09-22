@@ -63,6 +63,32 @@ def get_all_reviews_of_book(book_id: int, repo: AbstractRepository):
                 reviews_dto.append(review)
         return reviews_to_dict(reviews_dto)
 
+def get_books_by_author(letter: str, repo: AbstractRepository):
+    books = repo.get_books()
+    books_dto = []
+    for book in books:
+        for author in book.authors:
+            if author.full_name[0].lower() == letter:
+                books_dto.append(book)
+                break
+
+    books_dto = books_to_dict(books_dto)
+
+    return books_dto
+
+def get_books_by_publisher(letter, repo: AbstractRepository):
+    books = repo.get_books()
+    books_dto = []
+    for book in books:
+        if book.publisher.name[0].lower() == letter:
+            books_dto.append(book)
+            
+
+    books_dto = books_to_dict(books_dto)
+
+    return books_dto
+
+
 
 # ============================================
 # Functions to convert model entities to dicts. model / repo data -> primitive

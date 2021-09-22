@@ -21,36 +21,300 @@
     </ul>
   </div>
   <div class="tabs-wrapper">
-    {% if filter == 'author' or filter == 'publisher' %}
+    {% if filter == 'author' %}
     <div class="letters_wrapper">
       <ul class="letters">
-        <li><a>A</a></li>
-        <li><a>B</a></li>
-        <li><a>C</a></li>
-        <li><a>D</a></li>
-        <li><a>E</a></li>
-        <li><a>F</a></li>
-        <li><a>G</a></li>
-        <li><a>H</a></li>
-        <li><a>I</a></li>
-        <li><a>J</a></li>
-        <li><a>K</a></li>
-        <li><a>L</a></li>
-        <li><a>M</a></li>
-        <li><a>N</a></li>
-        <li><a>O</a></li>
-        <li><a>P</a></li>
-        <li><a>Q</a></li>
-        <li><a>R</a></li>
-        <li><a>S</a></li>
-        <li><a>T</a></li>
-        <li><a>U</a></li>
-        <li><a>V</a></li>
-        <li><a>W</a></li>
-        <li><a>X</a></li>
-        <li><a>Y</a></li>
-        <li><a>Z</a></li>
-        <li><a>Other</a></li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='a')}}"
+            >A</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='b')}}"
+            >B</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='c')}}"
+            >C</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='d')}}"
+            >D</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='e')}}"
+            >E</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='f')}}"
+            >F</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='g')}}"
+            >G</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='h')}}"
+            >H</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='i')}}"
+            >I</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='j')}}"
+            >J</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='k')}}"
+            >K</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='l')}}"
+            >L</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='m')}}"
+            >M</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='n')}}"
+            >N</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='o')}}"
+            >O</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='p')}}"
+            >P</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='q')}}"
+            >Q</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='r')}}"
+            >R</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='s')}}"
+            >S</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='t')}}"
+            >T</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='u')}}"
+            >U</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='v')}}"
+            >V</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='w')}}"
+            >W</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='x')}}"
+            >X</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='y')}}"
+            >Y</a
+          >
+        </li>
+        <li>
+          <a href="{{url_for('browse_bp.browse', filter='author', letter='z')}}"
+            >Z</a
+          >
+        </li>
+      </ul>
+    </div>
+    {% elif filter == 'publisher' %}
+    <div class="letters_wrapper">
+      <ul class="letters">
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='a')}}"
+            >A</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='b')}}"
+            >B</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='c')}}"
+            >C</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='d')}}"
+            >D</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='e')}}"
+            >E</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='f')}}"
+            >F</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='g')}}"
+            >G</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='h')}}"
+            >H</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='i')}}"
+            >I</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='j')}}"
+            >J</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='k')}}"
+            >K</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='l')}}"
+            >L</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='m')}}"
+            >M</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='n')}}"
+            >N</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='o')}}"
+            >O</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='p')}}"
+            >P</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='q')}}"
+            >Q</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='r')}}"
+            >R</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='s')}}"
+            >S</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='t')}}"
+            >T</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='u')}}"
+            >U</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='v')}}"
+            >V</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='w')}}"
+            >W</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='x')}}"
+            >X</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='y')}}"
+            >Y</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{url_for('browse_bp.browse', filter='publisher', letter='z')}}"
+            >Z</a
+          >
+        </li>
       </ul>
     </div>
 
@@ -67,7 +331,7 @@
       {% set author_list = [] %} {% for author in book.authors %} {{
       author.full_name if author_list.append(author.full_name) }} {% endfor %}
       <p>Author(s): {{author_list|join(", ")}}</p>
-      <p>Publisher(s): {{ book.publisher }}</p>
+      <p>Publisher: {{ book.publisher }}</p>
     </div>
     {% endfor %}
   </div>

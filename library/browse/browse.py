@@ -27,13 +27,31 @@ def browse():
 
  
 
-    books = services.get_all_books(repo.repo_instance)
+    
 
     # authors = services.get_authors(repo.repo_instance)
     filter = None
     filter = request.args.get('filter')
 
+    # ============ book filtering template code ===========================
 
+    if filter == 'author':
+        letter = request.args.get('letter')
+        if letter is None:
+            books = services.get_all_books(repo.repo_instance)
+        else:
+            books = services.get_books_by_author(letter, repo.repo_instance)
+    elif filter == 'publisher':
+        letter = request.args.get('letter')
+        if letter is None:
+            books = services.get_all_books(repo.repo_instance)
+        else:
+            books = services.get_books_by_publisher(letter, repo.repo_instance)
+    # elif filter == 'year':
+    #     books = services.get_books_by_year(year, repo.repo_instance)
+    else:
+
+        books = services.get_all_books(repo.repo_instance)
 
     # ----- NAVIGATION BUTTONS -----
     next_page_url = None
