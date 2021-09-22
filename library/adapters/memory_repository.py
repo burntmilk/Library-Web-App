@@ -31,21 +31,17 @@ class MemoryRepository(AbstractRepository):
         return self.__inventory.find_price(book_id)
 
     def get_user(self, user_name: str) -> User:
-        return next((user for user in self.__users if user.user_name==user_name),None)
+        return next((user for user in self.__users if user.user_name == user_name), None)
 
     def add_user(self, user: User):
         self.__users.append(user)
 
     def add_review(self, review: Review):
-        print(review)
+        super().add_review(review)
         self.__reviews.append(review)
-        print(self.__reviews)
 
     def get_reviews(self) -> List[Review]:
         return self.__reviews
-
-    def get_authors(self) -> List[Author]:
-        return self.__authors
 
 
 def load_books(data_path: Path, repo: MemoryRepository):    # makes list of book objects
