@@ -122,6 +122,9 @@ def get_books_by_year(year: int, repo: AbstractRepository):
 
     return books_dto
 
+# def book_in_favourites(book_id: int, repo: AbstractRepository):
+#     return repo.book_in_favourites()
+
 
 
 # ============================================

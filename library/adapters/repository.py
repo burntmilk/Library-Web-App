@@ -51,3 +51,7 @@ class AbstractRepository(abc.ABC):
     @abc.abstractmethod
     def get_reviews(self) -> List[Review]:
         raise NotImplementedError
+
+    # @abc.abstractmethod
+    # def book_in_favourites(self) -> bool:
+    #     raise NotImplementedError

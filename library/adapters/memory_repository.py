@@ -43,6 +43,9 @@ class MemoryRepository(AbstractRepository):
     def get_reviews(self) -> List[Review]:
         return self.__reviews
 
+    # def book_in_favourites(self) -> bool:
+    #     pass
+
 
 def load_books(data_path: Path, repo: MemoryRepository):    # makes list of book objects
     books_filename = str(Path(data_path) / "comic_books_excerpt.json")
