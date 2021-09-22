@@ -20,7 +20,7 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get_books(self) -> List[Book]:
+    def get_all_books(self) -> List[Book]:
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -52,6 +52,23 @@ class AbstractRepository(abc.ABC):
     def get_reviews(self) -> List[Review]:
         raise NotImplementedError
 
-    # @abc.abstractmethod
-    # def book_in_favourites(self) -> bool:
-    #     raise NotImplementedError
+    @abc.abstractmethod
+    def get_books_by_author_initial(self, initial_letter: str) -> List[Book]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_books_by_publisher_initial(self, initial_letter: str) -> List[Book]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_book_years(self) -> List[int]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_books_with_no_year(self) -> List[Book]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_books_by_year(self, year: int) -> List[Book]:
+        raise NotImplementedError
+

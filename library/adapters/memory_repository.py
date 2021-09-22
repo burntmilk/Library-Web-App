@@ -18,7 +18,7 @@ class MemoryRepository(AbstractRepository):
         if self.__inventory.find_book(book.book_id) is None:    # check if already in library
             self.__inventory.add_book(book, 0, 0)   # placeholder price + stock
 
-    def get_books(self) -> List[Book]:
+    def get_all_books(self) -> List[Book]:
         return self.__inventory.get_books()
 
     def get_book(self, book_id: int) -> Book:
@@ -43,8 +43,47 @@ class MemoryRepository(AbstractRepository):
     def get_reviews(self) -> List[Review]:
         return self.__reviews
 
-    # def book_in_favourites(self) -> bool:
-    #     pass
+    def get_books_by_author_initial(self, initial_letter: str) -> List[Book]:
+        books = self.get_all_books()
+        author_books = []
+        for book in books:
+            for author in book.authors:
+                if author.full_name[0].upper() == initial_letter.upper():
+                    author_books.append(book)
+                    break
+        return author_books
+
+    def get_books_by_publisher_initial(self, initial_letter: str) -> List[Book]:
+        books = self.get_all_books()
+        publisher_books = []
+        for book in books:
+            if book.publisher.name[0].upper() == initial_letter.upper():
+                publisher_books.append(book)
+        return publisher_books
+
+    def get_book_years(self) -> List[int]:
+        books = self.get_all_books()
+        years = []
+        for book in books:
+            if book.release_year not in years and book.release_year is not None:
+                years.append(book.release_year)
+        return sorted(years)
+
+    def get_books_with_no_year(self) -> List[Book]:
+        books = self.get_all_books()
+        no_year_books = []
+        for book in books:
+            if book.release_year is None:
+                no_year_books.append(book)
+        return no_year_books
+
+    def get_books_by_year(self, year: int) -> List[Book]:
+        books = self.get_all_books()
+        books_with_year = []
+        for book in books:
+            if book.release_year == year:
+                books_with_year.append(book)
+        return books_with_year
 
 
 def load_books(data_path: Path, repo: MemoryRepository):    # makes list of book objects

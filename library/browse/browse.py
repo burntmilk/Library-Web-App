@@ -28,39 +28,23 @@ def browse():
     else:
         page_num = int(page_num)
 
- 
-
-    
-
-    # authors = services.get_authors(repo.repo_instance)
-    filter = None
+    # --------- Filtering ----------
     filter = request.args.get('filter')
     letter = request.args.get('letter')
     year = request.args.get('year')
-    print(year == None)
 
-    if filter == 'author':
-        if letter is None:
-            books = services.get_all_books(repo.repo_instance)
-        else:
+    books = services.get_all_books(repo.repo_instance)
+    if letter is not None:
+        if filter == 'author':
             books = services.get_books_by_author(letter, repo.repo_instance)
-    elif filter == 'publisher':
-        if letter is None:
-            books = services.get_all_books(repo.repo_instance)
-        else:
+        elif filter == 'publisher':
             books = services.get_books_by_publisher(letter, repo.repo_instance)
-    elif filter == 'year':
-        if year is None:
-            books = services.get_all_books(repo.repo_instance)
-        elif year == 'None':
+    if year is not None:
+        if year == 'None':
             books = services.get_books_with_none(repo.repo_instance)
-        else:           
+        else:
             year = int(year)
             books = services.get_books_by_year(year, repo.repo_instance)
-
-        
-    else:
-        books = services.get_all_books(repo.repo_instance)
 
     year_list = services.get_all_years(repo.repo_instance)
 
@@ -84,7 +68,6 @@ def browse():
         books = books[(page_num - 1) * books_per_page: len(books)]
 
     letters_list = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-    
 
     return render_template(
         'browse/browse.html',

@@ -79,20 +79,24 @@
   </div>
 
   <div class="content-container">
-    {% for book in books %}
-    <div class="book_card">
-      <a href="{{ url_for('browse_bp.show_book', book_id=book.book_id) }}"
-        ><h3>{{ book.title }}</h3></a
-      >
-      <p>Release year: <b>{{ book.release_year }}</b></p>
+    {% if books %}
+      {% for book in books %}
+      <div class="book_card">
+        <a href="{{ url_for('browse_bp.show_book', book_id=book.book_id) }}"
+          ><h3>{{ book.title }}</h3></a
+        >
+        <p>Release year: <b>{{ book.release_year }}</b></p>
 
-      {% set author_list = [] %} {% for author in book.authors %} {{
-      author.full_name if author_list.append(author.full_name) }} {% endfor %}
-      <p>Author(s): {{author_list|join(", ")}}</p>
-      <p>Publisher: {{ book.publisher }}</p>
+        {% set author_list = [] %} {% for author in book.authors %} {{
+        author.full_name if author_list.append(author.full_name) }} {% endfor %}
+        <p>Author(s): {{author_list|join(", ")}}</p>
+        <p>Publisher: {{ book.publisher }}</p>
+      </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-  </div>
+   {% else %}
+  <h3>There are no results.</h3>
+  {% endif %}
 
   <footer>
     <!-- page navigation -->

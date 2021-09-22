@@ -17,16 +17,8 @@ def test_repo_can_retrieve_book(in_memory_repo):
 
 
 def test_repo_can_get_all_books(in_memory_repo):
-    books = in_memory_repo.get_books()
+    books = in_memory_repo.get_all_books()
     assert len(books) == 20
-
-
-# def test_repo_can_search_books_by_title(in_memory_repo):
-#     title = "switchblade"
-#     books = in_memory_repo.search_books_by_title(title)
-#     assert books[0].title == "The Switchblade Mamma"
-#     books = in_memory_repo.search_books_by_title("")
-#     assert books != []
 
 
 def test_repo_can_add_user(in_memory_repo):
@@ -66,3 +58,50 @@ def test_repo_can_get_reviews(in_memory_repo):
     assert len(in_memory_repo.get_reviews()) == 2
 
 
+def test_repo_can_get_books_by_author_initial(in_memory_repo):
+    books = in_memory_repo.get_books_by_author_initial('a')
+    assert len(books) == 2
+
+
+def test_repo_can_get_empty_list_when_getting_books_by_author_initial(in_memory_repo):
+    books = in_memory_repo.get_books_by_author_initial('z')
+    assert books == []
+
+
+def test_repo_can_get_books_by_publisher_initial(in_memory_repo):
+    books = in_memory_repo.get_books_by_publisher_initial('a')
+    assert len(books) == 4
+
+
+def test_repo_can_get_empty_list_when_getting_books_by_publisher_initial(in_memory_repo):
+    books = in_memory_repo.get_books_by_publisher_initial('z')
+    assert books == []
+
+
+def test_repo_can_get_book_years(in_memory_repo):   # excludes None. years are sorted
+    book_years = in_memory_repo.get_book_years()
+    assert len(book_years) == 8
+    assert book_years[0] == 1997
+    assert book_years[1] == 2006
+    for year in book_years:
+        assert year is not None
+
+
+def test_repo_can_get_books_with_no_year(in_memory_repo):
+    books = in_memory_repo.get_books_with_no_year()
+    assert len(books) == 4
+    for book in books:
+        assert book.release_year is None
+
+
+def test_repo_can_get_books_by_year(in_memory_repo):
+    books = in_memory_repo.get_books_by_year(2016)
+    assert len(books) == 5
+    assert books[0].title == "Cruelle"
+    for book in books:
+        assert book.release_year == 2016
+
+
+def test_repo_can_get_empty_list_when_getting_books_by_year(in_memory_repo):
+    books = in_memory_repo.get_books_by_year(-1)
+    assert books == []
