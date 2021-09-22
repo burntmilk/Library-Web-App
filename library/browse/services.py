@@ -76,11 +76,45 @@ def get_books_by_author(letter: str, repo: AbstractRepository):
 
     return books_dto
 
-def get_books_by_publisher(letter, repo: AbstractRepository):
+def get_books_by_publisher(letter: str, repo: AbstractRepository):
     books = repo.get_books()
     books_dto = []
     for book in books:
         if book.publisher.name[0].upper() == letter:
+            books_dto.append(book)
+            
+
+    books_dto = books_to_dict(books_dto)
+
+    return books_dto
+
+def get_all_years(repo: AbstractRepository):
+    books = repo.get_books()
+    years = []
+    for book in books:
+        if book.release_year not in years and book.release_year != None:
+            years.append(book.release_year)
+    
+    return sorted(years)
+
+def get_books_with_none(repo: AbstractRepository):
+    books = repo.get_books()
+    books_dto = []
+    for book in books:
+        if book.release_year == None:
+            books_dto.append(book)
+            
+
+    books_dto = books_to_dict(books_dto)
+
+    return books_dto
+
+
+def get_books_by_year(year: int, repo: AbstractRepository):
+    books = repo.get_books()
+    books_dto = []
+    for book in books:
+        if book.release_year == year:
             books_dto.append(book)
             
 
