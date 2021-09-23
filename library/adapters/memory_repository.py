@@ -38,22 +38,22 @@ class MemoryRepository(AbstractRepository):
 
     def get_user_favourite_books(self, user_name: str) -> List[Book]:
         user = self.get_user(user_name)
-        if user:    # user exists
-            return user.favourite_books
+        return user.favourite_books
+
+    def book_in_user_favourites(self, user_name: str, book_id: int) -> bool:
+        user = self.get_user(user_name)
+        book = self.get_book(book_id)
+        return book in user.favourite_books
 
     def add_book_to_user_favourites(self, user_name: str, book_id: int):
         user = self.get_user(user_name)
         book = self.get_book(book_id)
-        if user and book:   # if user and book exist
-            if book not in user.favourite_books:
-                user.add_book_to_favourites(book)
+        user.add_book_to_favourites(book)
 
     def remove_book_from_user_favourites(self, user_name, book_id: int):
         user = self.get_user(user_name)
         book = self.get_book(book_id)
-        if user and book:  # if user and book exist
-            if book in user.favourite_books:
-                user.remove_book_from_favourites(book)
+        user.remove_book_from_favourites(book)
 
     def add_review(self, review: Review):
         super().add_review(review)

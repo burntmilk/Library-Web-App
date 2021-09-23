@@ -83,3 +83,7 @@ class AbstractRepository(abc.ABC):
     @abc.abstractmethod
     def remove_book_from_user_favourites(self, user_name, book_id: int):
         raise NotImplementedError
+
+    @abc.abstractmethod
+    def book_in_user_favourites(self, user_name: str, book_id: int) -> bool:
+        raise NotImplementedError
