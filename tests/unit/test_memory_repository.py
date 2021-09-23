@@ -105,3 +105,22 @@ def test_repo_can_get_books_by_year(in_memory_repo):
 def test_repo_can_get_empty_list_when_getting_books_by_year(in_memory_repo):
     books = in_memory_repo.get_books_by_year(-1)
     assert books == []
+
+
+def test_repo_can_get_user_favourite_books(in_memory_repo):
+    in_memory_repo.add_user(User('username', 'Password1'))
+    user = in_memory_repo.get_user('username')
+    user_fav_books = in_memory_repo.get_user_favourite_books('username')
+    assert user_fav_books == []
+    in_memory_repo.add_book_to_user_favourites('username', 25742454)
+    user_fav_books = in_memory_repo.get_user_favourite_books('username')
+    assert str(user_fav_books) == '[<Book The Switchblade Mamma, book id = 25742454>]'
+
+
+def test_repo_cannot_get_invalid_user_favourite_books(in_memory_repo):
+    user_fav_books = in_memory_repo.get_user_favourite_books('invalid')
+    assert user_fav_books is None
+
+
+# def test_repo_can_get_
+
