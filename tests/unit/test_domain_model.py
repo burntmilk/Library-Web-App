@@ -396,6 +396,11 @@ class TestUser:
         assert str(user2) == "<User martin>"
         assert user2.password is None
 
+    def test_favourite_books(self):
+        books = [Book(874658, "Harry Potter"), Book(89576, "Lord of the Rings")]
+        user = User("Martin", "pw12345")
+        assert user.favourite_books == []
+
 
 @pytest.fixture
 def read_books_and_authors():

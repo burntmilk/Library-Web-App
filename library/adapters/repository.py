@@ -72,3 +72,14 @@ class AbstractRepository(abc.ABC):
     def get_books_by_year(self, year: int) -> List[Book]:
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def get_user_favourite_books(self, user_name: str) -> List[Book]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def add_book_to_user_favourites(self, user_name: str, book_id: int):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def remove_book_from_user_favourites(self, user_name, book_id: int):
+        raise NotImplementedError

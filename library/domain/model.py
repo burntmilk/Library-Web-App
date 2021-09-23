@@ -282,6 +282,7 @@ class User:
             self.__password = password
 
         self.__read_books = []
+        self.__favourite_books = []
         self.__reviews = []
         self.__pages_read = 0
 
@@ -304,6 +305,18 @@ class User:
     @property
     def pages_read(self) -> int:
         return self.__pages_read
+
+    @property
+    def favourite_books(self) -> List[Book]:  # added
+        return self.__favourite_books
+
+    def add_book_to_favourites(self, book: Book):
+        if isinstance(book, Book):
+            self.__favourite_books.append(book)
+
+    def remove_book_from_favourites(self, book: Book):
+        if isinstance(book, Book) and book in self.favourite_books:
+            self.favourite_books.remove(book)
 
     def read_a_book(self, book: Book):
         if isinstance(book, Book):
