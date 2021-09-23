@@ -126,11 +126,15 @@ def test_repo_can_check_if_book_in_user_favourites(in_memory_repo):
     in_memory_repo.add_user(User('username', 'Password1'))
     in_memory_repo.add_book_to_user_favourites('username', 25742454)
     assert in_memory_repo.book_in_user_favourites('username', 25742454) is True
-    assert in_memory_repo.book_in_user_favourites('username', -1) is False
 
 
 def test_repo_cannot_check_if_book_in_invalid_user_favourites(in_memory_repo):
     assert in_memory_repo.book_in_user_favourites('username', 25742454) is None
+
+
+def test_repo_cannot_check_if_invalid_book_in_user_favourites(in_memory_repo):
+    in_memory_repo.add_user(User('username', 'Password1'))
+    assert in_memory_repo.book_in_user_favourites('username', -1) is None
 
 
 def test_repo_can_add_to_user_favourites(in_memory_repo):
