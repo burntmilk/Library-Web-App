@@ -2,6 +2,9 @@
 
 <div class="browse_container">
   <h1>Favourites</h1>
+  {% if 'user_name' in session %} {% for book in favourites %}
+  <h1>{{book.title}}</h1>
+  {% endfor %} {% endif %}
 </div>
 
 {% endblock %}

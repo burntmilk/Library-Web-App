@@ -84,19 +84,25 @@ def browse():
     )
 
 
-@browse_blueprint.route('/book/<int:book_id>')
+@browse_blueprint.route('/book/<int:book_id>', methods=['GET', 'POST'])
 def show_book(book_id: int):
     book = services.get_book(book_id, repo.repo_instance)
     stock = services.get_book_stock(book_id, repo.repo_instance)
     price = services.get_book_price(book_id, repo.repo_instance)
     reviews = services.get_all_reviews_of_book(book_id, repo.repo_instance)
-    book_in_favourites = False
 
+    user_name = None
+    if 'user_name' in session:
+        user_name = session['user_name']
+        book_in_favourites = services.book_in_user_favourites(user_name, book_id, repo.repo_instance)
+    
+    else:
+        book_in_favourites = None
     form = FavouritesForm()
 
     if form.validate_on_submit():
-        if services.book_in_favourites(book_id, repo.repo_instance):
-            services.remove_book_from_favourites(book_id, repo.repo_instance)
+        if book_in_favourites:
+            services.remove_book_from_user_favourites(user_name, book_id, repo.repo_instance)
             return render_template(
             'browse/book.html',
             book=book,
@@ -107,8 +113,9 @@ def show_book(book_id: int):
             book_in_favourites=False
             )
         
-        services.add_book_to_favourites(book_id, repo.repo_instance)
-        form.submit.label.text = 'Remove from favourites'
+        
+        services.add_book_to_user_favourites(user_name, book_id, repo.repo_instance)
+        form.submit.label.text = 'Remove from Favourites'
         return render_template(
             'browse/book.html',
             book=book,
@@ -121,7 +128,11 @@ def show_book(book_id: int):
         
 
 
-    
+    if book_in_favourites == False:
+        form.submit.label.text = 'Add to Favourites'
+    elif book_in_favourites == True:
+        form.submit.label.text = 'Remove from Favourites'
+
 
     return render_template(
         'browse/book.html',
@@ -129,7 +140,9 @@ def show_book(book_id: int):
         stock=stock,
         price=price,
         reviews=reviews,
-        form=form
+        form=form,
+        book_in_favourites = book_in_favourites
+        
     )
 
 
