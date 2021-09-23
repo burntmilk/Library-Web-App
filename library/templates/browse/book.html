@@ -20,10 +20,15 @@
     <p><b>E-book:</b> available</p>
     {% else %}
     <p><b>E-book:</b> unavailable</p>
-    {% endif %}
-
-    <p><b>Number in stock:</b> {{ stock }}</p>
-    <p><b>Price:</b> ${{ price }}</p>
+    {% endif %} {% if 'user_name' in session %} {% if not book_in_favourites %}
+    <form method="POST" action="{{ handler_url }}" class="form">
+      {{ form.csrf_token }} {{ form.submit(class="button") }}
+    </form>
+    {% else %}
+    <form method="POST" action="{{ handler_url }}" class="form">
+      {{ form.csrf_token }} {{ form.submit(class="button") }}
+    </form>
+    {% endif %} {% endif %}
   </div>
   <div class="review_container">
     <div class="individual_book_card">

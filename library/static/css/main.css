@@ -53,13 +53,18 @@ button {
   color: #edf0f1;
 }
 
-.browse_container h1 {
-  padding: 50px 50px 30px 50px;
+.home_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.browse_container {
+  padding: 0px 50px 0px 50px;
 }
 
 .tabs-wrapper {
-  margin-left: 50px;
-  margin-right: 50px;
   width: 90vw;
 }
 
@@ -103,13 +108,21 @@ button {
   cursor: pointer;
 }
 
+.browse_title {
+  display: flex;
+  padding: 50px 0px 30px 0px;
+  align-items: center;
+  justify-content: space-between;
+}
+.book_id {
+  display: none;
+}
+
 .book_card {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
   padding: 10px 50px 10px 50px;
-  margin-left: 50px;
   margin-top: 15px;
-  width: 90vw;
 }
 
 .book_card:hover {

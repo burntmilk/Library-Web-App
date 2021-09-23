@@ -36,6 +36,25 @@ class MemoryRepository(AbstractRepository):
     def add_user(self, user: User):
         self.__users.append(user)
 
+    def get_user_favourite_books(self, user_name: str) -> List[Book]:
+        user = self.get_user(user_name)
+        return user.favourite_books
+
+    def book_in_user_favourites(self, user_name: str, book_id: int) -> bool:
+        user = self.get_user(user_name)
+        book = self.get_book(book_id)
+        return book in user.favourite_books
+
+    def add_book_to_user_favourites(self, user_name: str, book_id: int):
+        user = self.get_user(user_name)
+        book = self.get_book(book_id)
+        user.add_book_to_favourites(book)
+
+    def remove_book_from_user_favourites(self, user_name, book_id: int):
+        user = self.get_user(user_name)
+        book = self.get_book(book_id)
+        user.remove_book_from_favourites(book)
+
     def add_review(self, review: Review):
         super().add_review(review)
         self.__reviews.append(review)

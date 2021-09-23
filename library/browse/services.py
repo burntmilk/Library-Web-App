@@ -88,6 +88,23 @@ def get_books_by_year(year: int, repo: AbstractRepository):
     books_with_year = repo.get_books_by_year(year)
     return books_to_dict(books_with_year)
 
+# ---------- favourites -----------
+
+def get_user_favourite_books(user_name: str, repo: AbstractRepository) -> List[Book]:
+    return books_to_dict(repo.get_user_favourite_books(user_name))
+
+
+def book_in_user_favourites(user_name: str, book_id: int, repo: AbstractRepository) -> bool:
+    return repo.book_in_user_favourites(user_name, book_id)
+
+
+def add_book_to_user_favourites(user_name: str, book_id: int, repo: AbstractRepository):
+    repo.add_book_to_user_favourites(user_name, book_id)
+
+
+def remove_book_from_user_favourites(user_name: str, book_id: int, repo: AbstractRepository):
+    repo.remove_book_from_user_favourites(user_name, book_id)
+
 # ============================================
 # Functions to convert model entities to dicts. model / repo data -> primitive
 # ============================================

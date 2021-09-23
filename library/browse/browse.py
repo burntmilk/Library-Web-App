@@ -6,6 +6,7 @@ from flask_wtf.form import FlaskForm
 from wtforms.fields.core import RadioField
 from wtforms.fields.simple import SubmitField, TextAreaField
 from wtforms.validators import DataRequired, ValidationError
+from library.home.home import FavouritesForm
 
 
 import library.adapters.repository as repo
@@ -83,20 +84,65 @@ def browse():
     )
 
 
-@browse_blueprint.route('/book/<int:book_id>')
+@browse_blueprint.route('/book/<int:book_id>', methods=['GET', 'POST'])
 def show_book(book_id: int):
     book = services.get_book(book_id, repo.repo_instance)
     stock = services.get_book_stock(book_id, repo.repo_instance)
     price = services.get_book_price(book_id, repo.repo_instance)
-
     reviews = services.get_all_reviews_of_book(book_id, repo.repo_instance)
+
+    user_name = None
+    if 'user_name' in session:
+        user_name = session['user_name']
+        book_in_favourites = services.book_in_user_favourites(user_name, book_id, repo.repo_instance)
+    
+    else:
+        book_in_favourites = None
+    form = FavouritesForm()
+
+    if form.validate_on_submit():
+        if book_in_favourites:
+            services.remove_book_from_user_favourites(user_name, book_id, repo.repo_instance)
+            return render_template(
+            'browse/book.html',
+            book=book,
+            stock=stock,
+            price=price,
+            reviews=reviews,
+            form=form,
+            book_in_favourites=False
+            )
+        
+        
+        services.add_book_to_user_favourites(user_name, book_id, repo.repo_instance)
+        form.submit.label.text = 'Remove from Favourites'
+        return render_template(
+            'browse/book.html',
+            book=book,
+            stock=stock,
+            price=price,
+            reviews=reviews,
+            form=form,
+            book_in_favourites=True
+            )
+        
+
+
+    if book_in_favourites == False:
+        form.submit.label.text = 'Add to Favourites'
+    elif book_in_favourites == True:
+        form.submit.label.text = 'Remove from Favourites'
+
 
     return render_template(
         'browse/book.html',
         book=book,
         stock=stock,
         price=price,
-        reviews=reviews
+        reviews=reviews,
+        form=form,
+        book_in_favourites = book_in_favourites
+        
     )
 
 
@@ -145,3 +191,4 @@ class ReviewForm(FlaskForm):
         ProfanityFree(message="Your review must not contain profanity.")
     ])
     submit = SubmitField('Submit Review')
+

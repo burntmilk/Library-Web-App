@@ -1,6 +1,16 @@
 {% extends 'layout.html' %} {% block content %}
 <div class="browse_container">
-  <h1>Browse books {% if filter %} by {{filter}}{% endif %}</h1>
+
+  <div class="browse_title">
+    <h1>Browse Books {% if filter %} by {{filter}}{% endif %}</h1>
+    <a
+      style="text-decoration: underline; cursor: pointer; margin-left: 44%"
+      href="{{ url_for('home_bp.favourites') }}"
+      >Your Favourite Books</a
+    >
+  </div>
+
+
 
   <div class="tabs-wrapper">
     <ul class="tabs">
@@ -72,22 +82,21 @@
   </div>
 
   <div class="content-container">
-    {% if books %}
-      {% for book in books %}
-      <div class="book_card">
-        <a href="{{ url_for('browse_bp.show_book', book_id=book.book_id) }}"
-          ><h3>{{ book.title }}</h3></a
-        >
-        <p>Release year: <b>{{ book.release_year }}</b></p>
+    {% if books %} {% for book in books %}
+    <div class="book_card">
+      <a href="{{ url_for('browse_bp.show_book', book_id=book.book_id) }}"
+        ><h3>{{ book.title }}</h3></a
+      >
+      <p>Release year: <b>{{ book.release_year }}</b></p>
 
-        {% set author_list = [] %} {% for author in book.authors %} {{
-        author.full_name if author_list.append(author.full_name) }} {% endfor %}
-        <p>Author(s): {{author_list|join(", ")}}</p>
-        <p>Publisher: {{ book.publisher }}</p>
-      </div>
-      {% endfor %}
+      {% set author_list = [] %} {% for author in book.authors %} {{
+      author.full_name if author_list.append(author.full_name) }} {% endfor %}
+      <p>Author(s): {{author_list|join(", ")}}</p>
+      <p>Publisher: {{ book.publisher }}</p>
     </div>
-   {% else %}
+    {% endfor %}
+  </div>
+  {% else %}
   <h3>There are no results.</h3>
   {% endif %}
 
