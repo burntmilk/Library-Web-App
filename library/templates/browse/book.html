@@ -25,7 +25,7 @@
     <p><b>Number in stock:</b> {{ stock }}</p>
     <p><b>Price:</b> ${{ price }}</p>
 
-    {% if 'user_name' in session %}
+    {% if 'user_name' in session and not book_in_favourites %}
     <form method="POST" action="{{ handler_url }}" class="form">
       {{ form.csrf_token }} {{ form.submit(class="button") }}
     </form>

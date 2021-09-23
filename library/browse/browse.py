@@ -90,7 +90,7 @@ def show_book(book_id: int):
     stock = services.get_book_stock(book_id, repo.repo_instance)
     price = services.get_book_price(book_id, repo.repo_instance)
     reviews = services.get_all_reviews_of_book(book_id, repo.repo_instance)
-    book_in_favourites = None
+    book_in_favourites = False
 
     form = FavouritesForm()
 
@@ -108,6 +108,7 @@ def show_book(book_id: int):
             )
         
         services.add_book_to_favourites(book_id, repo.repo_instance)
+        form.submit.label.text = 'Remove from favourites'
         return render_template(
             'browse/book.html',
             book=book,

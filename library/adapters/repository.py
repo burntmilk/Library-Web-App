@@ -71,4 +71,5 @@ class AbstractRepository(abc.ABC):
     @abc.abstractmethod
     def get_books_by_year(self, year: int) -> List[Book]:
         raise NotImplementedError
+        
 
