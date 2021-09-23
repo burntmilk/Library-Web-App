@@ -89,6 +89,7 @@ def get_books_by_year(year: int, repo: AbstractRepository):
     return books_to_dict(books_with_year)
 
 
+# ---------- favourites -----------
 def get_user_favourite_books(user_name: str, repo: AbstractRepository) -> List[Book]:
     return repo.get_user_favourite_books(user_name)
 
