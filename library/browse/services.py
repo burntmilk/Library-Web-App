@@ -11,6 +11,10 @@ class ReviewFormInvalid(Exception):
     pass
 
 
+class UnknownUserException(Exception):
+    pass
+
+
 def get_book(book_id: int, repo: AbstractRepository) -> dict:
     book = repo.get_book(int(book_id))
     if book is None:
@@ -91,18 +95,32 @@ def get_books_by_year(year: int, repo: AbstractRepository):
 
 # ---------- favourites -----------
 def get_user_favourite_books(user_name: str, repo: AbstractRepository) -> List[Book]:
+    if repo.get_user(user_name) is None:
+        raise UnknownUserException
     return repo.get_user_favourite_books(user_name)
 
 
 def book_in_user_favourites(user_name: str, book_id: int, repo: AbstractRepository) -> bool:
+    if repo.get_book(book_id) is None:
+        raise NonExistentBookException
+    if repo.get_user(user_name) is None:
+        raise UnknownUserException
     return repo.book_in_user_favourites(user_name, book_id)
 
 
 def add_book_to_user_favourites(user_name: str, book_id: int, repo: AbstractRepository):
+    if repo.get_book(book_id) is None:
+        raise NonExistentBookException
+    if repo.get_user(user_name) is None:
+        raise UnknownUserException
     repo.add_book_to_user_favourites(user_name, book_id)
 
 
 def remove_book_from_user_favourites(user_name: str, book_id: int, repo: AbstractRepository):
+    if repo.get_book(book_id) is None:
+        raise NonExistentBookException
+    if repo.get_user(user_name) is None:
+        raise UnknownUserException
     repo.remove_book_from_user_favourites(user_name, book_id)
 
 
