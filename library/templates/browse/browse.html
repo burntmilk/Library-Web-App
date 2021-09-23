@@ -1,6 +1,13 @@
 {% extends 'layout.html' %} {% block content %}
 <div class="browse_container">
-  <h1>Browse books {% if filter %} by {{filter}}{% endif %}</h1>
+  <div class="browse_title">
+    <h1>Browse books {% if filter %} by {{filter}}{% endif %}</h1>
+    <a
+      style="text-decoration: underline; cursor: pointer; margin-left: 44%"
+      href="{{ url_for('home_bp.favourites') }}"
+      >Your Favourite Books</a
+    >
+  </div>
 
   <div class="tabs-wrapper">
     <ul class="tabs">

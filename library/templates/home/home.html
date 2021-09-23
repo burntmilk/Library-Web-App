@@ -1,3 +1,28 @@
 {% extends 'layout.html' %} {% block content %}
-<h1>Home</h1>
+<div class="browse_container">
+  <div class="home_container">
+    <div class="message_wrapper">
+      <h1 style="font-size: 100px">Welcome to the Library!</h1>
+      <hr style="margin-bottom: 20px" />
+    </div>
+
+    <a href="{{ url_for('browse_bp.browse') }}"
+      ><button style="height: 50px; width: 30vw">Browse Books</button></a
+    >
+
+    {% if 'user_name' in session %}
+    <a
+      style="margin-top: 60vh; text-decoration: underline; cursor: pointer"
+      href="{{ url_for('home_bp.favourites') }}"
+      >Your Favourite Books</a
+    >
+    {% else %}
+    <a
+      style="margin-top: 60vh; text-decoration: underline; cursor: pointer"
+      href="{{ url_for('authentication_bp.login') }}"
+      >Login to see your Favourite Books</a
+    >
+    {% endif %}
+  </div>
+</div>
 {% endblock %}

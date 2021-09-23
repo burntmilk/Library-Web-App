@@ -6,6 +6,7 @@ from flask_wtf.form import FlaskForm
 from wtforms.fields.core import RadioField
 from wtforms.fields.simple import SubmitField, TextAreaField
 from wtforms.validators import DataRequired, ValidationError
+from library.home.home import FavouritesForm
 
 
 import library.adapters.repository as repo
@@ -88,15 +89,46 @@ def show_book(book_id: int):
     book = services.get_book(book_id, repo.repo_instance)
     stock = services.get_book_stock(book_id, repo.repo_instance)
     price = services.get_book_price(book_id, repo.repo_instance)
-
     reviews = services.get_all_reviews_of_book(book_id, repo.repo_instance)
+    book_in_favourites = None
+
+    form = FavouritesForm()
+
+    if form.validate_on_submit():
+        if services.book_in_favourites(book_id, repo.repo_instance):
+            services.remove_book_from_favourites(book_id, repo.repo_instance)
+            return render_template(
+            'browse/book.html',
+            book=book,
+            stock=stock,
+            price=price,
+            reviews=reviews,
+            form=form,
+            book_in_favourites=False
+            )
+        
+        services.add_book_to_favourites(book_id, repo.repo_instance)
+        return render_template(
+            'browse/book.html',
+            book=book,
+            stock=stock,
+            price=price,
+            reviews=reviews,
+            form=form,
+            book_in_favourites=True
+            )
+        
+
+
+    
 
     return render_template(
         'browse/book.html',
         book=book,
         stock=stock,
         price=price,
-        reviews=reviews
+        reviews=reviews,
+        form=form
     )
 
 
@@ -145,3 +177,4 @@ class ReviewForm(FlaskForm):
         ProfanityFree(message="Your review must not contain profanity.")
     ])
     submit = SubmitField('Submit Review')
+
