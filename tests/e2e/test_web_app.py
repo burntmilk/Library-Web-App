@@ -5,7 +5,7 @@ from flask import session
 def test_home(client):
     response = client.get('/')
     assert response.status_code == 200
-    assert b'Home' in response.data
+    assert b'Welcome to the Library!' in response.data
 
 
 def test_browse(client):   # test browse all books page

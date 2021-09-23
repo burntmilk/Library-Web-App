@@ -400,6 +400,12 @@ class TestUser:
         books = [Book(874658, "Harry Potter"), Book(89576, "Lord of the Rings")]
         user = User("Martin", "pw12345")
         assert user.favourite_books == []
+        user.add_book_to_favourites(books[0])
+        user.add_book_to_favourites(books[1])
+        assert str(user.favourite_books) == "[<Book Harry Potter, book id = 874658>, <Book Lord of the Rings, book id = 89576>]"
+        assert books[0] in user.favourite_books
+        user.remove_book_from_favourites(books[0])
+        assert books[0] not in user.favourite_books
 
 
 @pytest.fixture
