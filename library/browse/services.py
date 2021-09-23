@@ -19,7 +19,7 @@ def get_book(book_id: int, repo: AbstractRepository) -> dict:
 
 
 def get_all_books(repo: AbstractRepository) -> List[Book]:
-    books = repo.get_books()
+    books = repo.get_all_books()
     books_dto = []
     if len(books) > 0:
         books_dto = books_to_dict(books)
@@ -64,9 +64,34 @@ def get_all_reviews_of_book(book_id: int, repo: AbstractRepository):
         return reviews_to_dict(reviews_dto)
 
 
+def get_books_by_author_initial(letter: str, repo: AbstractRepository):
+    books = repo.get_books_by_author_initial(letter)
+    return books_to_dict(books)
+
+
+def get_books_by_publisher_initial(letter: str, repo: AbstractRepository):
+    books = repo.get_books_by_publisher_initial(letter)
+    return books_to_dict(books)
+
+
+def get_book_years(repo: AbstractRepository):
+    years = repo.get_book_years()
+    return years
+
+
+def get_books_with_no_year(repo: AbstractRepository):
+    no_year_books = repo.get_books_with_no_year()
+    return books_to_dict(no_year_books)
+
+
+def get_books_by_year(year: int, repo: AbstractRepository):
+    books_with_year = repo.get_books_by_year(year)
+    return books_to_dict(books_with_year)
+
 # ============================================
 # Functions to convert model entities to dicts. model / repo data -> primitive
 # ============================================
+
 
 def book_to_dict(book: Book):
     book_dict = {
@@ -110,4 +135,3 @@ def review_to_dict(review: Review):
 
 def reviews_to_dict(reviews: Iterable[Review]):
     return [review_to_dict(review) for review in reviews]
-

@@ -11,7 +11,7 @@ def test_home(client):
 def test_browse(client):   # test browse all books page
     response = client.get('browse')
     assert response.status_code == 200
-    assert b'Browse Books' in response.data
+    assert b'Browse books' in response.data
     assert b'The Switchblade Mamma' in response.data
     assert b'Page 1' in response.data
 
@@ -19,24 +19,67 @@ def test_browse(client):   # test browse all books page
 def test_browse_page_num(client):   # test browse all books page with page num
     response = client.get('browse?page=2')
     assert response.status_code == 200
-    assert b'Browse Books' in response.data
+    assert b'Browse books' in response.data
     assert b'Page 2' in response.data
 
 
 def test_book(client):
-    book_id = 30128855
     response = client.get('/book/30128855')
     assert response.status_code == 200
     assert b'Cruelle' in response.data
 
 
-def test_review(client, auth):  # TODO: finish off review tests
+def test_filter_by_author_without_letter(client):   # shows all books until letter clicked
+    response = client.get('/browse?filter=author')
+    assert response.status_code == 200
+    assert b'The Switchblade Mamma' in response.data
+    assert b'Next Page' in response.data
+    assert b'by author' in response.data
+
+
+def test_filter_by_author_with_letter(client):
+    response = client.get('/browse?filter=author&letter=A')
+    assert response.status_code == 200
+    assert b'The Thing: Idol of Millions' in response.data
+    assert b'by author' in response.data
+
+
+def test_filter_by_publisher_without_letter(client):    # shows all books until letter clicked
+    response = client.get('/browse?filter=publisher')
+    assert response.status_code == 200
+    assert b'The Switchblade Mamma' in response.data
+    assert b'Next Page' in response.data
+    assert b'by publisher' in response.data
+
+
+def test_filter_by_publisher_with_letter(client):
+    response = client.get('/browse?filter=publisher&letter=A')
+    assert response.status_code == 200
+    assert b'War Stories, Volume 3' in response.data
+    assert b'by publisher' in response.data
+
+
+def test_filter_by_year_without_year(client):
+    response = client.get('/browse?filter=year')
+    assert response.status_code == 200
+    assert b'The Switchblade Mamma' in response.data
+    assert b'Next Page' in response.data
+    assert b'by year' in response.data
+
+
+def test_filter_by_year_with_year(client):
+    response = client.get('/browse?filter=year&year=2016')
+    assert response.status_code == 200
+    assert b'Cruelle' in response.data
+    assert b'by year' in response.data
+
+
+def test_review(client, auth):
     client.post(
         '/authentication/register',
         data={'user_name': 'username', 'password': 'Password1'}
     )   # create existing user
     auth.login()
-    response = client.get('/review/30128855')
     response = client.post(
         '/review/30128855',
         data={'review_text': "test review", 'rating': 5, 'book_id': 30128855}
@@ -50,8 +93,8 @@ def test_login_required_to_review(client):
 
 
 @pytest.mark.parametrize(('review_text', 'messages'), (
-        ('poop is a bad word', (b'Your review must not contain profanity.')),
-        ('so is pee', (b'Your review must not contain profanity.'))
+        ('poop is a bad word', b'Your review must not contain profanity.'),
+        ('so is pee', b'Your review must not contain profanity.')
 ))
 def test_review_with_invalid_input(client, auth, review_text, messages):  # check against profanity
     client.post(
@@ -124,5 +167,3 @@ def test_logout(client, auth):
         # Check that logging out clears the user's session.
         auth.logout()
         assert 'user_id' not in session
-
-

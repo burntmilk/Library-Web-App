@@ -15,12 +15,9 @@
       </div>
 
       <div class="form-field">
-        {{ form.review_text.label }} {{ form.review_text }}
-        {% if form.review_text.errors %}
-          {% for error in form.review_text.errors %}
-            {{ error }}
-          {% endfor %}
-        {% endif %}
+        {{ form.review_text.label }} {{ form.review_text }} {% if
+        form.review_text.errors %} {% for error in form.review_text.errors %} {{
+        error }} {% endfor %} {% endif %}
       </div>
 
       {{ form.submit(class="button") }}

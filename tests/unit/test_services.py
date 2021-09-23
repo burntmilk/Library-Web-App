@@ -123,3 +123,49 @@ def test_authentication_with_invalid_credentials(in_memory_repo):
         auth_services.authenticate_user(new_user_name, '0987654321', in_memory_repo)
 
 
+def test_can_get_books_by_author_initial(in_memory_repo):
+    books_as_dict = browse_services.get_books_by_author_initial('a', in_memory_repo)
+    assert len(books_as_dict) == 2
+    assert books_as_dict[1]['title'] == "The Thing: Idol of Millions"
+
+
+def test_can_get_empty_list_when_getting_books_by_author_initial(in_memory_repo):
+    books = browse_services.get_books_by_author_initial('z', in_memory_repo)
+    assert books == []
+
+
+def test_can_get_books_by_publisher_initial(in_memory_repo):
+    books_as_dict = browse_services.get_books_by_publisher_initial('a', in_memory_repo)
+    assert len(books_as_dict) == 4
+    assert books_as_dict[0]['publisher'] == "Avatar Press"
+
+
+def test_can_get_empty_list_when_getting_books_by_publisher_initial(in_memory_repo):
+    books = browse_services.get_books_by_publisher_initial('z', in_memory_repo)
+    assert books == []
+
+
+def test_can_get_book_years(in_memory_repo):
+    years = browse_services.get_book_years(in_memory_repo)
+    assert len(years) == 8
+    assert years[0] == 1997
+    assert years[1] == 2006
+    for year in years:
+        assert year is not None
+
+
+def test_can_get_books_with_no_year(in_memory_repo):
+    books = browse_services.get_books_with_no_year(in_memory_repo)
+    assert len(books) == 4
+    for book in books:
+        assert book['release_year'] is None
+
+
+def test_can_get_books_by_year(in_memory_repo):
+    books_as_dict = browse_services.get_books_by_year(2016, in_memory_repo)
+    assert len(books_as_dict) == 5
+
+
+def test_can_get_empty_list_when_getting_books_by_year(in_memory_repo):
+    books_as_dict = browse_services.get_books_by_year(-1, in_memory_repo)
+    assert books_as_dict == []
