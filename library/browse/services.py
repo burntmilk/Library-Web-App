@@ -97,8 +97,8 @@ def get_books_by_year(year: int, repo: AbstractRepository):
 def get_user_favourite_books(user_name: str, repo: AbstractRepository):
     if repo.get_user(user_name) is None:
         raise UnknownUserException
-    books_dto = repo.get_user_favourite_books(user_name)
-    return books_to_dict(books_dto)
+    books_dto = books_to_dict(repo.get_user_favourite_books(user_name))
+    return books_dto
 
 
 def book_in_user_favourites(user_name: str, book_id: int, repo: AbstractRepository) -> bool:

@@ -44,7 +44,7 @@ class MemoryRepository(AbstractRepository):
     def book_in_user_favourites(self, user_name: str, book_id: int) -> bool:
         user = self.get_user(user_name)
         book = self.get_book(book_id)
-        if user is not None:
+        if user is not None and book is not None:
             return book in user.favourite_books
 
     def add_book_to_user_favourites(self, user_name: str, book_id: int):
