@@ -110,6 +110,22 @@ def test_review_with_invalid_input(client, auth, review_text, messages):  # chec
         assert message in response.data
 
 
+def test_login_required_to_view_favourite_books(client):
+    response = client.post('/favourites')
+    assert response.headers['Location'] == 'http://localhost/authentication/login'
+
+
+def test_can_view_user_favourite_books(client, auth):
+    client.post(
+        '/authentication/register',
+        data={'user_name': 'username', 'password': 'Password1'}
+    )   # create existing user
+    auth.login()
+    response = client.get('/favourites')
+    assert b'Favourites' in response.data
+    assert b'There are no results.' in response.data
+
+
 def test_register(client):
     response_code = client.get('/authentication/register').status_code
     assert response_code == 200

@@ -112,8 +112,7 @@ def show_book(book_id: int):
             form=form,
             book_in_favourites=False
             )
-        
-        
+
         services.add_book_to_user_favourites(user_name, book_id, repo.repo_instance)
         form.submit.label.text = 'Remove from Favourites'
         return render_template(
@@ -125,14 +124,11 @@ def show_book(book_id: int):
             form=form,
             book_in_favourites=True
             )
-        
 
-
-    if book_in_favourites == False:
+    if book_in_favourites is False:
         form.submit.label.text = 'Add to Favourites'
-    elif book_in_favourites == True:
+    elif book_in_favourites is True:
         form.submit.label.text = 'Remove from Favourites'
-
 
     return render_template(
         'browse/book.html',
@@ -141,8 +137,7 @@ def show_book(book_id: int):
         price=price,
         reviews=reviews,
         form=form,
-        book_in_favourites = book_in_favourites
-        
+        book_in_favourites=book_in_favourites
     )
 
 

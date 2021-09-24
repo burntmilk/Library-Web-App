@@ -2,11 +2,11 @@ from flask import Blueprint, render_template
 from flask.globals import request, session
 from flask_wtf.form import FlaskForm
 from wtforms.fields.core import Field
-from wtforms.fields.simple import SubmitField, TextField
+from wtforms.fields.simple import SubmitField, TextField, HiddenField
 
 import library.adapters.repository as repo
 import library.browse.services as services
-
+from library.authentication.authentication import login_required
 
 home_blueprint = Blueprint(
     'home_bp', __name__)
@@ -20,14 +20,13 @@ def home():
 
 
 @home_blueprint.route('/favourites', methods=['GET', 'POST'])
+@login_required
 def favourites():
     user_name = None
     user_favourite_books = []
 
     form = RemoveFavouritesForm()
-    
 
-    
     if 'user_name' in session:
         user_name = session['user_name']
 
@@ -41,10 +40,12 @@ def favourites():
 
     return render_template('home/favourites.html', favourites=user_favourite_books, form=form)
 
+
 class FavouritesForm(FlaskForm):
     submit = SubmitField('Add to Favourites')
 
+
 class RemoveFavouritesForm(FlaskForm):
     submit = SubmitField('Remove from Favourites')
-    book_id = TextField('book_id')
+    book_id = HiddenField('book_id')
     

@@ -169,3 +169,90 @@ def test_can_get_books_by_year(in_memory_repo):
 def test_can_get_empty_list_when_getting_books_by_year(in_memory_repo):
     books_as_dict = browse_services.get_books_by_year(-1, in_memory_repo)
     assert books_as_dict == []
+
+
+def test_can_get_user_favourite_books(in_memory_repo):
+    auth_services.add_user('username', 'Password1', in_memory_repo)
+    user_fav_books = browse_services.get_user_favourite_books('username', in_memory_repo)
+    assert len(user_fav_books) == 0
+    browse_services.add_book_to_user_favourites('username', 30128855, in_memory_repo)
+    user_fav_books = browse_services.get_user_favourite_books('username', in_memory_repo)
+    assert len(user_fav_books) == 1
+    assert user_fav_books[0]['book_id'] == 30128855
+
+
+def test_cannot_get_invalid_users_favourite_books(in_memory_repo):
+    with pytest.raises(browse_services.UnknownUserException):
+        user_fav_books = browse_services.get_user_favourite_books('username', in_memory_repo)
+
+
+def test_can_check_if_book_in_user_favourites(in_memory_repo):
+    auth_services.add_user('username', 'Password1', in_memory_repo)
+    assert browse_services.book_in_user_favourites('username', 30128855, in_memory_repo) is False
+    browse_services.add_book_to_user_favourites('username', 30128855, in_memory_repo)
+    assert browse_services.book_in_user_favourites('username', 30128855, in_memory_repo) is True
+
+
+def test_cannot_check_if_invalid_book_in_user_favourites(in_memory_repo):
+    auth_services.add_user('username', 'Password1', in_memory_repo)
+    with pytest.raises(browse_services.NonExistentBookException):
+        return browse_services.book_in_user_favourites('username', -1, in_memory_repo)
+
+
+def test_cannot_check_if_book_in_invalid_user_favourites(in_memory_repo):
+    with pytest.raises(browse_services.UnknownUserException):
+        return browse_services.book_in_user_favourites('username', 30128855, in_memory_repo)
+
+
+def test_can_add_book_to_user_favourites(in_memory_repo):
+    auth_services.add_user('username', 'Password1', in_memory_repo)
+    browse_services.add_book_to_user_favourites('username', 30128855, in_memory_repo)
+    user_fav_books = browse_services.get_user_favourite_books('username', in_memory_repo)
+    assert len(user_fav_books) == 1
+    assert user_fav_books[0]['book_id'] == 30128855
+
+
+def test_cannot_add_invalid_book_to_user_favourites(in_memory_repo):
+    auth_services.add_user('username', 'Password1', in_memory_repo)
+    with pytest.raises(browse_services.NonExistentBookException):
+        browse_services.add_book_to_user_favourites('username', -1, in_memory_repo)
+
+
+def test_cannot_add_book_to_invalid_user_favourites(in_memory_repo):
+    with pytest.raises(browse_services.UnknownUserException):
+        browse_services.add_book_to_user_favourites('username', 30128855, in_memory_repo)
+
+
+def test_cannot_add_book_already_in_user_favourites(in_memory_repo):
+    auth_services.add_user('username', 'Password1', in_memory_repo)
+    browse_services.add_book_to_user_favourites('username', 30128855, in_memory_repo)
+    browse_services.add_book_to_user_favourites('username', 30128855, in_memory_repo)
+    user_fav_books = browse_services.get_user_favourite_books('username', in_memory_repo)
+    assert len(user_fav_books) == 1
+
+
+def test_can_remove_books_from_user_favourites(in_memory_repo):
+    auth_services.add_user('username', 'Password1', in_memory_repo)
+    browse_services.add_book_to_user_favourites('username', 30128855, in_memory_repo)
+    browse_services.remove_book_from_user_favourites('username', 30128855, in_memory_repo)
+    user_fav_books = browse_services.get_user_favourite_books('username', in_memory_repo)
+    assert len(user_fav_books) == 0
+
+
+def test_cannot_remove_invalid_book_from_user_favourites(in_memory_repo):
+    auth_services.add_user('username', 'Password1', in_memory_repo)
+    browse_services.add_book_to_user_favourites('username', 30128855, in_memory_repo)
+    with pytest.raises(browse_services.NonExistentBookException):
+        browse_services.remove_book_from_user_favourites('username', -1, in_memory_repo)
+
+
+def test_cannot_remove_book_from_invalid_user_favourites(in_memory_repo):
+    with pytest.raises(browse_services.UnknownUserException):
+        browse_services.remove_book_from_user_favourites('username', 30128855, in_memory_repo)
+
+
+def test_cannot_remove_book_from_empty_user_favourites(in_memory_repo):
+    auth_services.add_user('username', 'Password1', in_memory_repo)
+    browse_services.remove_book_from_user_favourites('username', 30128855, in_memory_repo)
+    user_fav_books = browse_services.get_user_favourite_books('username', in_memory_repo)
+    assert len(user_fav_books) == 0
