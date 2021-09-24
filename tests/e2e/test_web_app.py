@@ -171,4 +171,8 @@ def test_logout(client, auth):
     with client:
         # Check that logging out clears the user's session.
         auth.logout()
+
         assert 'user_id' not in session
+
+     
+
