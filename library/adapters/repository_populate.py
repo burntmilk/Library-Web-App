@@ -4,7 +4,7 @@ from library.adapters.jsondatareader import BooksJSONReader
 from library.domain.model import Publisher, Author, Book, Review, User, BooksInventory
 
 
-def load_books(data_path: Path, repo: AbstractRepository):    # makes list of book objects
+def load_books(data_path: Path, repo: AbstractRepository):
     books_filename = str(Path(data_path) / "comic_books_excerpt.json")
     author_filename = str(Path(data_path) / "book_authors_excerpt.json")
 
