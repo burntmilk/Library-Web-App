@@ -21,8 +21,19 @@ def create_app(test_config=None):
         app.config.from_mapping(test_config)
         data_path = app.config['TEST_DATA_PATH']
 
-    repo.repo_instance = MemoryRepository()
-    populate(data_path, repo.repo_instance)
+    if app.config['REPOSITORY'] == 'memory':
+        database_mode = False
+        repo.repo_instance = MemoryRepository()
+        populate(data_path, repo.repo_instance)
+
+    elif app.config['REPOSITORY'] == 'database':
+        database_uri = app.config['SQLALCHEMY_DATABASE_URI']
+        database_echo = app.config['SQLALCHEMY_ECHO']
+        database_engine = create_engine(database_uri, connect_args={"check_same_thread": False}, poolclass=NullPool,
+                                        echo=database_echo)
+        session_factory = sessionmaker(autocommit=False, autoflush=True, bind=database_engine)
+        # repo.repo_instance = database_repository.SqlAlchemyRepository(session_factory)
+
 
     with app.app_context():
         # Register blueprints.
