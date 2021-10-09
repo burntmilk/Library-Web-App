@@ -6,6 +6,11 @@ from pathlib import Path    # Gets file names for book + author data
 import library.adapters.repository as repo
 from library.adapters.memory_repository import MemoryRepository, populate
 
+# imports from SQLAlchemy
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, clear_mappers
+from sqlalchemy.pool import NullPool
+
 
 def create_app(test_config=None):
     app = Flask(__name__)
