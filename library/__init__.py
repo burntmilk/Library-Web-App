@@ -4,7 +4,8 @@ from flask import Flask, render_template
 from pathlib import Path    # Gets file names for book + author data
 
 import library.adapters.repository as repo
-from library.adapters.memory_repository import MemoryRepository, populate
+# from library.adapters.memory_repository import MemoryRepository, populate
+from library.adapters import memory_repository, repository_populate
 
 # imports from SQLAlchemy
 from sqlalchemy import create_engine
@@ -23,8 +24,8 @@ def create_app(test_config=None):
 
     if app.config['REPOSITORY'] == 'memory':
         database_mode = False
-        repo.repo_instance = MemoryRepository()
-        populate(data_path, repo.repo_instance)
+        repo.repo_instance = memory_repository.MemoryRepository()
+        repository_populate.populate(data_path, repo.repo_instance)
 
     elif app.config['REPOSITORY'] == 'database':
         database_uri = app.config['SQLALCHEMY_DATABASE_URI']
