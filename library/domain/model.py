@@ -313,7 +313,6 @@ class User:
     def add_book_to_favourites(self, book: Book):
         if isinstance(book, Book) and book not in self.favourite_books:
             self.__favourite_books.append(book)
-            
 
     def remove_book_from_favourites(self, book: Book):
         if isinstance(book, Book) and book in self.favourite_books:

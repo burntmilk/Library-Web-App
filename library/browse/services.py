@@ -11,6 +11,10 @@ class ReviewFormInvalid(Exception):
     pass
 
 
+class UnknownUserException(Exception):
+    pass
+
+
 def get_book(book_id: int, repo: AbstractRepository) -> dict:
     book = repo.get_book(int(book_id))
     if book is None:
@@ -88,22 +92,38 @@ def get_books_by_year(year: int, repo: AbstractRepository):
     books_with_year = repo.get_books_by_year(year)
     return books_to_dict(books_with_year)
 
-# ---------- favourites -----------
 
-def get_user_favourite_books(user_name: str, repo: AbstractRepository) -> List[Book]:
-    return books_to_dict(repo.get_user_favourite_books(user_name))
+# ---------- favourites -----------
+def get_user_favourite_books(user_name: str, repo: AbstractRepository):
+    if repo.get_user(user_name) is None:
+        raise UnknownUserException
+    books_dto = books_to_dict(repo.get_user_favourite_books(user_name))
+    return books_dto
 
 
 def book_in_user_favourites(user_name: str, book_id: int, repo: AbstractRepository) -> bool:
+    if repo.get_book(book_id) is None:
+        raise NonExistentBookException
+    if repo.get_user(user_name) is None:
+        raise UnknownUserException
     return repo.book_in_user_favourites(user_name, book_id)
 
 
 def add_book_to_user_favourites(user_name: str, book_id: int, repo: AbstractRepository):
+    if repo.get_book(book_id) is None:
+        raise NonExistentBookException
+    if repo.get_user(user_name) is None:
+        raise UnknownUserException
     repo.add_book_to_user_favourites(user_name, book_id)
 
 
 def remove_book_from_user_favourites(user_name: str, book_id: int, repo: AbstractRepository):
+    if repo.get_book(book_id) is None:
+        raise NonExistentBookException
+    if repo.get_user(user_name) is None:
+        raise UnknownUserException
     repo.remove_book_from_user_favourites(user_name, book_id)
+
 
 # ============================================
 # Functions to convert model entities to dicts. model / repo data -> primitive

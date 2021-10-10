@@ -105,3 +105,51 @@ def test_repo_can_get_books_by_year(in_memory_repo):
 def test_repo_can_get_empty_list_when_getting_books_by_year(in_memory_repo):
     books = in_memory_repo.get_books_by_year(-1)
     assert books == []
+
+
+def test_repo_can_get_user_favourite_books(in_memory_repo):
+    in_memory_repo.add_user(User('username', 'Password1'))
+    # user = in_memory_repo.get_user('username')
+    user_fav_books = in_memory_repo.get_user_favourite_books('username')
+    assert user_fav_books == []
+    in_memory_repo.add_book_to_user_favourites('username', 25742454)
+    user_fav_books = in_memory_repo.get_user_favourite_books('username')
+    assert str(user_fav_books) == '[<Book The Switchblade Mamma, book id = 25742454>]'
+
+
+def test_repo_cannot_get_invalid_user_favourite_books(in_memory_repo):
+    user_fav_books = in_memory_repo.get_user_favourite_books('invalid')
+    assert user_fav_books is None
+
+
+def test_repo_can_check_if_book_in_user_favourites(in_memory_repo):
+    in_memory_repo.add_user(User('username', 'Password1'))
+    in_memory_repo.add_book_to_user_favourites('username', 25742454)
+    assert in_memory_repo.book_in_user_favourites('username', 25742454) is True
+
+
+def test_repo_cannot_check_if_book_in_invalid_user_favourites(in_memory_repo):
+    assert in_memory_repo.book_in_user_favourites('username', 25742454) is None
+
+
+def test_repo_cannot_check_if_invalid_book_in_user_favourites(in_memory_repo):
+    in_memory_repo.add_user(User('username', 'Password1'))
+    assert in_memory_repo.book_in_user_favourites('username', -1) is None
+
+
+def test_repo_can_add_to_user_favourites(in_memory_repo):
+    in_memory_repo.add_user(User('username', 'Password1'))
+    in_memory_repo.add_user(User('username2', 'Password2'))
+    in_memory_repo.add_book_to_user_favourites('username', 25742454)
+    assert in_memory_repo.book_in_user_favourites('username', 25742454) is True
+    in_memory_repo.add_book_to_user_favourites('username2', 30128855)
+    assert in_memory_repo.book_in_user_favourites('username2', 30128855) is True
+    assert in_memory_repo.book_in_user_favourites('username2', 25742454) is False
+
+
+def test_repo_can_remove_book_from_user_favourites(in_memory_repo):
+    in_memory_repo.add_user(User('username', 'Password1'))
+    in_memory_repo.add_book_to_user_favourites('username', 25742454)
+    assert in_memory_repo.book_in_user_favourites('username', 25742454) is True
+    in_memory_repo.remove_book_from_user_favourites('username', 25742454)
+    assert in_memory_repo.book_in_user_favourites('username', 25742454) is False
