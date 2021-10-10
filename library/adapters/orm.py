@@ -1,4 +1,3 @@
-
 from sqlalchemy import (
     Table, MetaData, Column, Integer, String, Date, DateTime,
     ForeignKey
@@ -86,7 +85,7 @@ def map_model_to_tables():
         '_Book__book_id': books_table.c.id,
         '_Book__title': books_table.c.title,
         '_Book__description': books_table.c.description,
-        '_Book__publisher': relationship(model.Publisher, backref="_Publisher__name"),
+        '_Book__publisher': relationship(model.Publisher),
         '_Book__authors':relationship(model.Author, secondary=book_authors_table),
         '_Book__release_year': books_table.c.release_year,
         '_Book__ebook': books_table.c.ebook,
@@ -94,7 +93,7 @@ def map_model_to_tables():
     })
 
     mapper(model.Publisher, publishers_table, properties={
-        '_Pubisher__name': publishers_table.c.name
+        '_Publisher__name': publishers_table.c.name
     })
 
     mapper(model.Author, authors_table, properties={
