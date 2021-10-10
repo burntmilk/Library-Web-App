@@ -3,7 +3,7 @@ from sqlalchemy import (
     Table, MetaData, Column, Integer, String, Date, DateTime,
     ForeignKey
 )
-from sqlalchemy.orm import mapper, relationship, synonym
+from sqlalchemy.orm import backref, mapper, relationship, synonym
 from sqlalchemy.sql.expression import true
 from sqlalchemy.sql.sqltypes import Boolean, Float
 
@@ -40,6 +40,7 @@ books_table = Table(
     'books', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('title', String(255), nullable=False),
+    Column('description', String(300), nullable=True),
     Column('release_year', Integer, nullable=True),
     Column('ebook', Boolean, nullable=True),
     Column('num_pages', Integer, nullable=True),
@@ -78,9 +79,25 @@ def map_model_to_tables():
         '_Review__book': relationship(model.Book),
         '_Review__review_text': reviews_table.c.review_text,
         '_Review__rating': reviews_table.c.rating,
-        '_Review'
+        '_Review__timestamp': reviews_table.c.timestamp
     })
 
     mapper(model.Book, books_table, properties={
-        '_Book__'
+        '_Book__book_id': books_table.c.id,
+        '_Book__title': books_table.c.title,
+        '_Book__description': books_table.c.description,
+        '_Book__publisher': relationship(model.Publisher, backref="_Publisher__name"),
+        '_Book__authors':relationship(model.Author, secondary=book_authors_table),
+        '_Book__release_year': books_table.c.release_year,
+        '_Book__ebook': books_table.c.ebook,
+        '_Book__num_pages': books_table.c.num_pages
+    })
+
+    mapper(model.Publisher, publishers_table, properties={
+        '_Pubisher__name': publishers_table.c.name
+    })
+
+    mapper(model.Author, authors_table, properties={
+        '_Author__unique_id':authors_table.c.id,
+        '_Author__full_name':authors_table.c.full_name
     })
