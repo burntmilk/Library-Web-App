@@ -70,7 +70,7 @@ def map_model_to_tables():
     mapper(model.User, users_table, properties={
         '_User__user_name': users_table.c.user_name,
         '_User__password': users_table.c.password,
-        '_User__favourite_books': relationship(model.Book),
+        '_User__favourite_books': relationship(model.Book, secondary=favourites_table),
         '_User__reviews': relationship(model.Review)
     })
 
