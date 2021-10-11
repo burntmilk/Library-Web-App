@@ -33,7 +33,6 @@ def create_app(test_config=None):
         database_engine = create_engine(database_uri, connect_args={"check_same_thread": False}, poolclass=NullPool,
                                         echo=database_echo)
 
-
         session_factory = sessionmaker(autocommit=False, autoflush=True, bind=database_engine)
         repo.repo_instance = database_repository.SqlAlchemyRepository(session_factory)
 
@@ -64,5 +63,15 @@ def create_app(test_config=None):
 
         from .authentication import authentication
         app.register_blueprint(authentication.authentication_blueprint)
+
+        @app.before_request
+        def before_flask_http_request_function():
+            if isinstance(repo.repo_instance, database_repository.SqlAlchemyRepository):
+                repo.repo_instance.reset_session()
+
+        @app.teardown_appcontext
+        def shutdown_session(exception=None):
+            if isinstance(repo.repo_instance, database_repository.SqlAlchemyRepository):
+                repo.repo_instance.close_session()
 
     return app
