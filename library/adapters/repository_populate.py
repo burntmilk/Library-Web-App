@@ -50,14 +50,18 @@ def load_books(data_path: Path, repo: AbstractRepository, db_mode: bool):
 
             repo.add_book(book_instance)
 
-        # for book_id in book_publishers.keys():
-        #     book = repo.get_book(book_id)
-        #     publisher = book_publishers[book_id]
-        #     # print(book)
-        #     book.publisher = publisher
-        #     repo.add_publisher(publisher)
         for author_id in author_books.keys():
-            pass
+            numerical_id = int(author_id)
+            author_name = None
+            for author_json in authors_json:
+                if int(author_json['author_id']) == numerical_id:
+                    author_name = author_json['name']
+            author = Author(numerical_id, author_name)
+            for book_id in author_books[author_id]:
+                book = repo.get_book(book_id)
+                book.add_author(author)
+            repo.add_author(author)
+
         for publisher_name in publisher_books.keys():
             publisher = Publisher(publisher_name)
             for book_id in publisher_books[publisher_name]:
