@@ -87,3 +87,11 @@ class AbstractRepository(abc.ABC):
     @abc.abstractmethod
     def book_in_user_favourites(self, user_name: str, book_id: int) -> bool:
         raise NotImplementedError
+
+    @abc.abstractmethod
+    def add_author(self, author: Author):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def add_publisher(self, publisher: Publisher):
+        raise NotImplementedError

@@ -45,7 +45,7 @@ books_table = Table(
     Column('num_pages', Integer, nullable=True),
     Column('stock', Integer, nullable=True),
     Column('price', Float, nullable=True),
-    Column('publisher_id', ForeignKey('publishers.name'))
+    Column('publisher_id', ForeignKey('publishers.id'))
 )
 
 authors_table = Table(
@@ -62,9 +62,8 @@ book_authors_table = Table(
 
 publishers_table = Table(
     'publishers', metadata,
-    # Column('id', Integer, primary_key=True, autoincrement=True),
-    # Column('name', String(255), nullable=False, unique=True)
-    Column('name', String(255), primary_key=True, unique=True)
+    Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('name', String(255), nullable=False)
 )
 
 def map_model_to_tables():
@@ -99,5 +98,5 @@ def map_model_to_tables():
 
     mapper(model.Author, authors_table, properties={
         '_Author__unique_id':authors_table.c.id,
-        '_Author__full_name':authors_table.c.full_name
+        '_Author__full_name':authors_table.c.full_name,
     })

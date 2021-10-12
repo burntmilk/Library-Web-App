@@ -128,3 +128,13 @@ class SqlAlchemyRepository(AbstractRepository):
 
     def get_books_by_year(self, year: int) -> List[Book]:
         pass
+
+    def add_author(self, author: Author):
+        with self._session_cm as scm:
+            scm.session.add(author)
+            scm.commit()
+
+    def add_publisher(self, publisher: Publisher):
+        with self._session_cm as scm:
+            scm.session.add(publisher)
+            scm.commit()

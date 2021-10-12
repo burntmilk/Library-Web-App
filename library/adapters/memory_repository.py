@@ -106,6 +106,12 @@ class MemoryRepository(AbstractRepository):
                 books_with_year.append(book)
         return books_with_year
 
+    def add_author(self, author: Author):
+        pass
+
+    def add_publisher(self, publisher: Publisher):
+        pass
+
 
 # def load_books(data_path: Path, repo: MemoryRepository):    # makes list of book objects
 #     books_filename = str(Path(data_path) / "comic_books_excerpt.json")
