@@ -53,6 +53,7 @@ class SqlAlchemyRepository(AbstractRepository):
 
     def add_book(self, book: Book):
         with self._session_cm as scm:
+            print(book)     # test
             scm.session.add(book)
             scm.commit()
 
@@ -65,16 +66,27 @@ class SqlAlchemyRepository(AbstractRepository):
         return books
 
     def get_book(self, book_id: int) -> Book:
-        pass
+        book = None
+        try:
+            book = self._session_cm.session.query(Book).filter(Book._Book__book_id == book_id).one()
+        except NoResultFound:
+            pass
+        return book
 
     def get_book_stock(self, book_id: int) -> int:
+        # stock = self._session_cm.session.query(Book).filter(Book._Book__book_id == book_id)
         pass
 
     def get_book_price(self, book_id: int) -> int:
         pass
 
     def get_user(self, user_name: str) -> User:
-        pass
+        user = None
+        try:
+            user = self._session_cm.session.query(User).filter(User._User.__user_name == user_name).one()
+        except NoResultFound:
+            pass
+        return user
 
     def add_user(self, user: User):
         with self._session_cm as scm:
@@ -82,6 +94,9 @@ class SqlAlchemyRepository(AbstractRepository):
             scm.commit()
 
     def get_user_favourite_books(self, user_name: str) -> List[Book]:
+        # user = self.get_user(user_name)
+        # if user:    # not none
+        #     return user.favourite_books
         pass
 
     def book_in_user_favourites(self, user_name: str, book_id: int) -> bool:
@@ -113,3 +128,13 @@ class SqlAlchemyRepository(AbstractRepository):
 
     def get_books_by_year(self, year: int) -> List[Book]:
         pass
+
+    def add_author(self, author: Author):
+        with self._session_cm as scm:
+            scm.session.add(author)
+            scm.commit()
+
+    def add_publisher(self, publisher: Publisher):
+        with self._session_cm as scm:
+            scm.session.add(publisher)
+            scm.commit()
