@@ -33,7 +33,7 @@ def add_user(user_name: str, password: str, repo: AbstractRepository):
 def get_user(user_name: str, repo: AbstractRepository):
     user = repo.get_user(user_name)
     if user is None:
-        raise UnknownUserException
+        return None
 
     return user_to_dict(user)
 

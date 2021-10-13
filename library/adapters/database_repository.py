@@ -95,15 +95,21 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_user(self, user_name: str) -> User:
         user = None
         try:
-            user = self._session_cm.session.query(User).filter(User._User.__user_name == user_name).one()
+            user = self._session_cm.session.execute('SELECT user_name, password FROM users WHERE user_name = :user_name',
+                                               {'user_name': user_name}).fetchone()
+            
         except NoResultFound:
             pass
+
         return user
 
     def add_user(self, user: User):
         with self._session_cm as scm:
-            scm.session.add(user)
-            scm.commit()
+            try:
+                scm.session.add(user)
+                scm.commit()
+            except exc.IntegrityError:
+                scm.session.rollback()
 
     def get_user_favourite_books(self, user_name: str) -> List[Book]:
         # user = self.get_user(user_name)
