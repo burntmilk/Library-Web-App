@@ -63,7 +63,7 @@ book_authors_table = Table(
 publishers_table = Table(
     'publishers', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('name', String(255), nullable=False)
+    Column('name', String(255), nullable=False, unique=True)
 )
 
 def map_model_to_tables():

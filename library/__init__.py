@@ -9,7 +9,7 @@ from sqlalchemy.orm import sessionmaker, clear_mappers
 from sqlalchemy.pool import NullPool
 
 import library.adapters.repository as repo
-from library.adapters.memory_repository import MemoryRepository, populate
+from library.adapters.memory_repository import MemoryRepository #, populate
 from library.adapters import memory_repository
 from library.adapters.orm import metadata, map_model_to_tables
 
@@ -25,7 +25,7 @@ def create_app(test_config=None):
     if app.config['REPOSITORY'] == 'memory':
         database_mode = False
         repo.repo_instance = memory_repository.MemoryRepository()
-        repository_populate.populate(data_path, repo.repo_instance)
+        # repository_populate.populate(data_path, repo.repo_instance)
 
     elif app.config['REPOSITORY'] == 'database':
         database_uri = app.config['SQLALCHEMY_DATABASE_URI']
