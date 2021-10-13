@@ -1,7 +1,7 @@
 from datetime import date
 from typing import List
 
-from sqlalchemy import desc, asc
+from sqlalchemy import desc, asc, exc
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 
 from sqlalchemy.orm import scoped_session
@@ -54,10 +54,13 @@ class SqlAlchemyRepository(AbstractRepository):
     def add_book(self, book: Book):
         with self._session_cm as scm:
             print(book)     # test
-            scm.session.add(book)
-            scm.commit()
+            try:
+                scm.session.add(book)
+                scm.commit()
+            except exc.IntegrityError:
+                scm.session.rollback()
 
-    def get_all_books(self) -> List[Book]:  # possibly change, as books will always be in db
+    def get_all_books(self) -> List[Book]:# possibly change, as books will always be in db
         books = []
         try:
             books = self._session_cm.session.query(Book).all()
