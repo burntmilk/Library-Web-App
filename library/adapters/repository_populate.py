@@ -70,8 +70,6 @@ def load_books(data_path: Path, repo: AbstractRepository, db_mode: bool):
             repo.add_publisher(publisher)
 
 
-
-
 def load_users(data_path: Path, repo: AbstractRepository):
     pass
 

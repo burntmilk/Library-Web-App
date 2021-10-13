@@ -74,11 +74,20 @@ class SqlAlchemyRepository(AbstractRepository):
         return book
 
     def get_book_stock(self, book_id: int) -> int:
-        # stock = self._session_cm.session.query(Book).filter(Book._Book__book_id == book_id)
-        pass
+        # return 0
+        stock = self._session_cm.session.execute('SELECT stock FROM books WHERE id = :book_id',
+                                               {'book_id': book_id}).fetchone()
+        if stock:
+            return stock
+        return 0
 
     def get_book_price(self, book_id: int) -> int:
-        pass
+        # return 0
+        price = self._session_cm.session.execute('SELECT price FROM books WHERE id = :book_id',
+                                               {'book_id': book_id}).fetchone()
+        if price:
+            return price
+        return 0
 
     def get_user(self, user_name: str) -> User:
         user = None
@@ -109,10 +118,18 @@ class SqlAlchemyRepository(AbstractRepository):
         pass
 
     def add_review(self, review: Review):
-        pass
+        super().add_review(review)
+        with self._session_cm as scm:
+            scm.session.add(review)
+            scm.commit()
 
     def get_reviews(self) -> List[Review]:
-        pass
+        reviews = []
+        try:
+            reviews = self._session_cm.session.query(Review).all()
+        except NoResultFound:
+            pass
+        return reviews
 
     def get_books_by_author_initial(self, initial_letter: str) -> List[Book]:
         pass
