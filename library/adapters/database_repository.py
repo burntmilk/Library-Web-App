@@ -112,19 +112,39 @@ class SqlAlchemyRepository(AbstractRepository):
                 scm.session.rollback()
 
     def get_user_favourite_books(self, user_name: str) -> List[Book]:
-        # user = self.get_user(user_name)
-        # if user:    # not none
-        #     return user.favourite_books
-        pass
+        books = []
+        fav_books = []
+        id = self._session_cm.session.execute('SELECT id FROM users WHERE user_name = :user_name',
+                                               {'user_name': user_name}).fetchone()
+        try:
+            books = self._session_cm.session.execute('SELECT * FROM favourites WHERE user_id = :id', {'id': id[0]}).all()
+        except NoResultFound:
+            pass
+        for book in books:
+            add_book = self._session_cm.session.query(Book).filter(Book._Book__book_id == book[1]).one()
+            fav_books.append(add_book)
+
+        return fav_books
 
     def book_in_user_favourites(self, user_name: str, book_id: int) -> bool:
         pass
+        
 
     def add_book_to_user_favourites(self, user_name: str, book_id: int):
-        pass
+        id = self._session_cm.session.execute('SELECT id FROM users WHERE user_name = :user_name',
+                                               {'user_name': user_name}).fetchone()
+        print(id[0])                                      
+        self._session_cm.session.execute('INSERT INTO favourites (user_id, book_id) VALUES(:user_id, :book_id)', 
+            {'user_id': id[0], 'book_id': book_id})
+        self._session_cm.session.commit()
 
     def remove_book_from_user_favourites(self, user_name, book_id: int):
-        pass
+        id = self._session_cm.session.execute('SELECT id FROM users WHERE user_name = :user_name',
+                                               {'user_name':user_name}).fetchone()
+        self._session_cm.session.execute('DELETE FROM favourites WHERE user_id = :user_id AND book_id = :book_id', 
+            {'user_id': id[0], 'book_id': book_id})
+            
+        self._session_cm.session.commit()
 
     def add_review(self, review: Review):
         super().add_review(review)

@@ -57,7 +57,6 @@ def login():
         # Use the service layer to lookup the user.
         try:
             user = services.get_user(form.user_name.data, repo.repo_instance)
-            print("login user",user)
             # Authenticate user.
             services.authenticate_user(user['user_name'], form.password.data, repo.repo_instance)
 
