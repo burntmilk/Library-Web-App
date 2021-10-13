@@ -143,28 +143,35 @@ class SqlAlchemyRepository(AbstractRepository):
                 book_ids += (self._session_cm.session.execute(
                     'SELECT book_id FROM book_authors WHERE author_id = :author_id',
                     {'author_id': author_id}).all())[0]
-                print(book_ids)
             books = self._session_cm.session.query(Book).filter(Book._Book__book_id.in_(book_ids)).all()
         return books
 
     def get_books_by_publisher_initial(self, initial_letter: str) -> List[Book]:
-        # books = self.get_all_books()
-        # publisher_books = []
-        # for book in books:
-        #     if book.publisher.name[0].upper() == initial_letter.upper():
-        #         publisher_books.append(book)
-        # return publisher_books
         books = []
         publisher_ids = self._session_cm.session.execute(
-            'SELECT id FROM publishers WHERE')
+            'SELECT id FROM publishers WHERE SUBSTRING(name, 1, 1) = :initial',
+            {'initial': initial_letter.upper()}).all()
+        print(publisher_ids)
+        if publisher_ids:
+            book_ids = []
+            for publisher_id in publisher_ids:
+                publisher_id = int(publisher_id[0])
+                book_ids += (self._session_cm.session.execute(
+                    'SELECT id FROM books WHERE publisher_id = :publisher_id',
+                    {'publisher_id': publisher_id}).all())
+                book_ids = [id[0] for id in book_ids]
+            books = self._session_cm.session.query(Book).filter(Book._Book__book_id.in_(book_ids)).all()
+        return books
 
     def get_book_years(self) -> List[int]:
-        books = self.get_all_books()
         years = []
-        for book in books:
-            if book.release_year not in years and book.release_year is not None:
-                years.append(book.release_year)
-        return sorted(years)
+        try:
+            years = self._session_cm.session.execute(
+                'SELECT DISTINCT release_year FROM books WHERE release_year IS NOT NULL').all()
+            years = [year[0] for year in years]
+        except NoResultFound:
+            pass
+        return years
 
     def get_books_with_no_year(self) -> List[Book]:
         books = []
