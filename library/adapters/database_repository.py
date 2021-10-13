@@ -132,22 +132,31 @@ class SqlAlchemyRepository(AbstractRepository):
         return reviews
 
     def get_books_by_author_initial(self, initial_letter: str) -> List[Book]:
-        books = self.get_all_books()
-        author_books = []
-        for book in books:
-            for author in book.authors:
-                if author.full_name[0].upper() == initial_letter.upper():
-                    author_books.append(book)
-                    break
-        return author_books
+        books = []
+        author_ids = self._session_cm.session.execute(
+            'SELECT id FROM authors WHERE SUBSTRING(full_name, 1, 1) = :initial',
+             {'initial': initial_letter.upper()}).all()
+        if author_ids:
+            book_ids = []
+            for author_id in author_ids:
+                author_id = int(author_id[0])
+                book_ids += (self._session_cm.session.execute(
+                    'SELECT book_id FROM book_authors WHERE author_id = :author_id',
+                    {'author_id': author_id}).all())[0]
+                print(book_ids)
+            books = self._session_cm.session.query(Book).filter(Book._Book__book_id.in_(book_ids)).all()
+        return books
 
     def get_books_by_publisher_initial(self, initial_letter: str) -> List[Book]:
-        books = self.get_all_books()
-        publisher_books = []
-        for book in books:
-            if book.publisher.name[0].upper() == initial_letter.upper():
-                publisher_books.append(book)
-        return publisher_books
+        # books = self.get_all_books()
+        # publisher_books = []
+        # for book in books:
+        #     if book.publisher.name[0].upper() == initial_letter.upper():
+        #         publisher_books.append(book)
+        # return publisher_books
+        books = []
+        publisher_ids = self._session_cm.session.execute(
+            'SELECT id FROM publishers WHERE')
 
     def get_book_years(self) -> List[int]:
         books = self.get_all_books()
