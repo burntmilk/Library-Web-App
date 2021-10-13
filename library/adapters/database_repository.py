@@ -53,7 +53,7 @@ class SqlAlchemyRepository(AbstractRepository):
 
     def add_book(self, book: Book):
         with self._session_cm as scm:
-            print(book)     # test
+            # print(book)     # test
             scm.session.add(book)
             scm.commit()
 
@@ -92,7 +92,7 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_user(self, user_name: str) -> User:
         user = None
         try:
-            user = self._session_cm.session.query(User).filter(User._User.__user_name == user_name).one()
+            user = self._session_cm.session.query(User).filter(User._User__user_name == user_name).one()
         except NoResultFound:
             pass
         return user
@@ -103,9 +103,9 @@ class SqlAlchemyRepository(AbstractRepository):
             scm.commit()
 
     def get_user_favourite_books(self, user_name: str) -> List[Book]:
-        # user = self.get_user(user_name)
-        # if user:    # not none
-        #     return user.favourite_books
+        user = self.get_user(user_name)
+        if user:    # not none
+            return user.favourite_books
         pass
 
     def book_in_user_favourites(self, user_name: str, book_id: int) -> bool:
@@ -132,19 +132,46 @@ class SqlAlchemyRepository(AbstractRepository):
         return reviews
 
     def get_books_by_author_initial(self, initial_letter: str) -> List[Book]:
-        pass
+        books = self.get_all_books()
+        author_books = []
+        for book in books:
+            for author in book.authors:
+                if author.full_name[0].upper() == initial_letter.upper():
+                    author_books.append(book)
+                    break
+        return author_books
 
     def get_books_by_publisher_initial(self, initial_letter: str) -> List[Book]:
-        pass
+        books = self.get_all_books()
+        publisher_books = []
+        for book in books:
+            if book.publisher.name[0].upper() == initial_letter.upper():
+                publisher_books.append(book)
+        return publisher_books
 
     def get_book_years(self) -> List[int]:
-        pass
+        books = self.get_all_books()
+        years = []
+        for book in books:
+            if book.release_year not in years and book.release_year is not None:
+                years.append(book.release_year)
+        return sorted(years)
 
     def get_books_with_no_year(self) -> List[Book]:
-        pass
+        books = []
+        try:
+            books = self._session_cm.session.query(Book).filter(Book._Book__release_year == None)
+        except NoResultFound:
+            pass
+        return books
 
     def get_books_by_year(self, year: int) -> List[Book]:
-        pass
+        books = []
+        try:
+            books = self._session_cm.session.query(Book).filter(Book._Book__release_year == year)
+        except NoResultFound:
+            pass
+        return books
 
     def add_author(self, author: Author):
         with self._session_cm as scm:
