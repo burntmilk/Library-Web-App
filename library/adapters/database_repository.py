@@ -164,7 +164,8 @@ class SqlAlchemyRepository(AbstractRepository):
                 author_id = int(author_id[0])
                 book_ids += (self._session_cm.session.execute(
                     'SELECT book_id FROM book_authors WHERE author_id = :author_id',
-                    {'author_id': author_id}).all())[0]
+                    {'author_id': author_id}).all())
+            book_ids = [id[0] for id in book_ids]
             books = self._session_cm.session.query(Book).filter(Book._Book__book_id.in_(book_ids)).all()
         return books
 
@@ -173,7 +174,6 @@ class SqlAlchemyRepository(AbstractRepository):
         publisher_ids = self._session_cm.session.execute(
             'SELECT id FROM publishers WHERE SUBSTRING(name, 1, 1) = :initial',
             {'initial': initial_letter.upper()}).all()
-        print(publisher_ids)
         if publisher_ids:
             book_ids = []
             for publisher_id in publisher_ids:
@@ -181,7 +181,7 @@ class SqlAlchemyRepository(AbstractRepository):
                 book_ids += (self._session_cm.session.execute(
                     'SELECT id FROM books WHERE publisher_id = :publisher_id',
                     {'publisher_id': publisher_id}).all())
-                book_ids = [id[0] for id in book_ids]
+            book_ids = [id[0] for id in book_ids]
             books = self._session_cm.session.query(Book).filter(Book._Book__book_id.in_(book_ids)).all()
         return books
 
