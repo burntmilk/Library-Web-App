@@ -74,11 +74,10 @@ class SqlAlchemyRepository(AbstractRepository):
         return book
 
     def get_book_stock(self, book_id: int) -> int:
-        # return 0
         stock = self._session_cm.session.execute('SELECT stock FROM books WHERE id = :book_id',
                                                {'book_id': book_id}).fetchone()
         if stock:
-            return stock
+            return stock[0]
         return 0
 
     def get_book_price(self, book_id: int) -> int:
@@ -86,7 +85,7 @@ class SqlAlchemyRepository(AbstractRepository):
         price = self._session_cm.session.execute('SELECT price FROM books WHERE id = :book_id',
                                                {'book_id': book_id}).fetchone()
         if price:
-            return price
+            return price[0]
         return 0
 
     def get_user(self, user_name: str) -> User:
@@ -121,7 +120,17 @@ class SqlAlchemyRepository(AbstractRepository):
         return fav_books
 
     def book_in_user_favourites(self, user_name: str, book_id: int) -> bool:
-        pass
+        user_id = self._session_cm.session.execute('SELECT id FROM users WHERE user_name = :user_name',
+                                              {'user_name': user_name}).one()[0]
+        book_id = self._session_cm.session.execute('SELECT id FROM books WHERE id = :book_id',
+                                                   {'book_id': book_id}).one()[0]
+        try:
+            exists = self._session_cm.session.execute(
+                'SELECT book_id FROM favourites WHERE user_id = :user_id AND book_id = :book_id',
+                {'user_id': user_id, 'book_id': book_id}).one()
+        except NoResultFound:
+            return False
+        return exists is not None
 
     def add_book_to_user_favourites(self, user_name: str, book_id: int):
         id = self._session_cm.session.execute('SELECT id FROM users WHERE user_name = :user_name',
