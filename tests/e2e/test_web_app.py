@@ -176,7 +176,10 @@ def test_login(client, auth):
 
 
 def test_logout(client, auth):
-    # Login a user.
+    client.post(
+        '/authentication/register',
+        data={'user_name': 'username', 'password': 'Password1'}
+    )   # create existing user
     auth.login()
 
     with client:
