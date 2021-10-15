@@ -90,9 +90,9 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_user(self, user_name: str) -> User:
         user = None
         try:
-            # user = self._session_cm.session.query(User).filter(User._User__user_name == user_name).one()
-            user = self._session_cm.session.execute('SELECT user_name, password FROM users WHERE user_name = :user_name',
-                                               {'user_name': user_name}).fetchone()
+            user = self._session_cm.session.query(User).filter(User._User__user_name == user_name).one()
+            # user = self._session_cm.session.execute('SELECT user_name, password FROM users WHERE user_name = :user_name',
+            #                                    {'user_name': user_name}).fetchone()
         except NoResultFound:
             pass
         return user
