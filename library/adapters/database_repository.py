@@ -76,25 +76,23 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_book_stock(self, book_id: int) -> int:
         stock = self._session_cm.session.execute('SELECT stock FROM books WHERE id = :book_id',
                                                {'book_id': book_id}).fetchone()
-        if stock:
-            return stock[0]
-        return 0
+        if stock[0] is None:
+            return 0
+        return stock[0]
 
     def get_book_price(self, book_id: int) -> int:
-        # return 0
         price = self._session_cm.session.execute('SELECT price FROM books WHERE id = :book_id',
                                                {'book_id': book_id}).fetchone()
-        if price:
-            return price[0]
-        return 0
+        if price[0] is None:
+            return 0
+        return price[0]
 
     def get_user(self, user_name: str) -> User:
         user = None
         try:
-            user = self._session_cm.session.query(User).filter(User._User__user_name == user_name).one()
-            # user = self._session_cm.session.execute('SELECT user_name, password FROM users WHERE user_name = :user_name',
-            #                                    {'user_name': user_name}).fetchone()
-
+            # user = self._session_cm.session.query(User).filter(User._User__user_name == user_name).one()
+            user = self._session_cm.session.execute('SELECT user_name, password FROM users WHERE user_name = :user_name',
+                                               {'user_name': user_name}).fetchone()
         except NoResultFound:
             pass
         return user
