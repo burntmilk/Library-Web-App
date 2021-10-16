@@ -106,26 +106,32 @@ class MemoryRepository(AbstractRepository):
                 books_with_year.append(book)
         return books_with_year
 
+    def add_author(self, author: Author):
+        pass
 
-def load_books(data_path: Path, repo: MemoryRepository):    # makes list of book objects
-    books_filename = str(Path(data_path) / "comic_books_excerpt.json")
-    author_filename = str(Path(data_path) / "book_authors_excerpt.json")
-
-    reader = BooksJSONReader(books_filename, author_filename)
-    reader.read_json_files()
-    books_list = reader.dataset_of_books
-
-    for book in books_list:     # load the books into repo
-        repo.add_book(book)
+    def add_publisher(self, publisher: Publisher):
+        pass
 
 
-def load_users(data_path: Path, repo: MemoryRepository):
-    pass
-
-
-def load_reviews(data_path: Path, repo: MemoryRepository, users):
-    pass
-
-
-def populate(data_path: Path, repo: MemoryRepository):
-    load_books(data_path, repo)
+# def load_books(data_path: Path, repo: MemoryRepository):    # makes list of book objects
+#     books_filename = str(Path(data_path) / "comic_books_excerpt.json")
+#     author_filename = str(Path(data_path) / "book_authors_excerpt.json")
+#
+#     reader = BooksJSONReader(books_filename, author_filename)
+#     reader.read_json_files()
+#     books_list = reader.dataset_of_books
+#
+#     for book in books_list:     # load the books into repo
+#         repo.add_book(book)
+#
+#
+# def load_users(data_path: Path, repo: MemoryRepository):
+#     pass
+#
+#
+# def load_reviews(data_path: Path, repo: MemoryRepository, users):
+#     pass
+#
+#
+# def populate(data_path: Path, repo: MemoryRepository):
+#     load_books(data_path, repo)

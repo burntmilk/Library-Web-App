@@ -387,3 +387,13 @@ class BooksInventory:
         for book_id in self.__books:
             books.append(self.__books[book_id])
         return books
+
+
+class ModelException(Exception):
+    pass
+
+
+def make_author_association(book: Book, author: Author):
+    if author in book.authors:
+        raise ModelException(f'Author {author.full_name} already in Book "{book.title}" authors')
+    book.add_author(author)

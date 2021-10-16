@@ -26,6 +26,8 @@ def register():
         # Successful POST, i.e. the user name and password have passed validation checking.
         # Use the service layer to attempt to add the new user.
         try:
+            if(services.get_user(form.user_name.data, repo.repo_instance) != None):
+                raise services.NameNotUniqueException
             services.add_user(form.user_name.data, form.password.data, repo.repo_instance)
 
             # All is well, redirect the user to the login page.
@@ -55,7 +57,8 @@ def login():
         # Use the service layer to lookup the user.
         try:
             user = services.get_user(form.user_name.data, repo.repo_instance)
-
+            if user is None:
+                raise services.UnknownUserException
             # Authenticate user.
             services.authenticate_user(user['user_name'], form.password.data, repo.repo_instance)
 
